@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 namespace Nuages.Queue;
 
     [ExcludeFromCodeCoverage]
-    [SuppressMessage("Usage", "CA2254", MessageId = "The logging message template should not vary between calls to \'LoggerExtensions.LogInformation(ILogger, string, params object[])\'")]
+  
     // ReSharper disable once UnusedType.Global
     public abstract class QueueWorkerService<T> : BackgroundService where T : IQueueService
     {
         protected string? QueueName { get; set; }
-        protected int MaxMessages { get; set; } = 10;
-        protected int WaitDelayWhenNoMessages { get; set; } = 15;
+        protected int MaxMessagesCount { get; set; } = 10;
+        protected int WaitDelayInMillisecondsWhenNoMessages { get; set; } = 15;
         
         protected readonly IServiceProvider ServiceProvider;
         protected readonly ILogger<QueueWorkerService<T>> Logger;
@@ -49,7 +49,7 @@ namespace Nuages.Queue;
             {
                 try
                 {
-                    var messages = await queueService.ReceiveMessageAsync(queueFullName, MaxMessages);
+                    var messages = await queueService.ReceiveMessageAsync(queueFullName, MaxMessagesCount);
 
                     if (messages.Any())
                     {
@@ -68,7 +68,8 @@ namespace Nuages.Queue;
                     }
                     else
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(WaitDelayWhenNoMessages), stoppingToken);
+                        LogInformation($"0 messages received");
+                        await Task.Delay(TimeSpan.FromSeconds(WaitDelayInMillisecondsWhenNoMessages), stoppingToken);
                     }
                 }
                 catch (Exception ex)
@@ -83,11 +84,11 @@ namespace Nuages.Queue;
 
         protected virtual void LogInformation(string message)
         {
-            Logger.LogInformation(message);
+            Logger.LogInformation(message: $"{message}");
         }
         
         protected virtual void LogError(string message)
         {
-            Logger.LogError(message);
+            Logger.LogError($"{message}");
         }
     }
