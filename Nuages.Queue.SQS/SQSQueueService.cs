@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 
@@ -23,6 +24,11 @@ public class SQSQueueService : ISQSQueueService
             });
 
             return true;
+        }
+
+        public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
+        {
+            return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
         }
 
         public async Task<List<QueueMessage>> ReceiveMessageAsync(string queueFullName, int maxMessages = 1)

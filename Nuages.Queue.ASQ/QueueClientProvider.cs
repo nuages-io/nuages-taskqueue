@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace Nuages.Queue.ASQ;
 
+// ReSharper disable once UnusedType.Global
 public class QueueClientProvider : IQueueClientProvider
 {
     private readonly IOptionsMonitor<QueueClientOptions> _options;

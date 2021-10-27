@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Nuages.Queue.ASQ;
 
 // ReSharper disable once InconsistentNaming
@@ -29,6 +31,11 @@ public class ASQQueueService : IAsqQueueService
         }
         
         return true;
+    }
+    
+    public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
+    {
+        return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }
 
     public async Task<List<QueueMessage>> ReceiveMessageAsync(string fullQueueName, int maxMessages = 1)

@@ -1,9 +1,9 @@
-﻿
-using Amazon;
+﻿using Amazon;
 using Amazon.Runtime;
 using Amazon.SQS;
 using Nuages.Queue.SQS;
 using Nuages.TaskQueue;
+using Nuages.TaskQueue.Tasks;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
@@ -36,8 +36,13 @@ var hostBuilder = new HostBuilder()
             .Configure<TaskQueueWorkerOptions>(config =>
             {
                 config.QueueName = name;
+                config.Enabled = true;
             })
         );
 
+var host = hostBuilder.UseConsoleLifetime().Build();
 
-await hostBuilder.RunConsoleAsync();
+var queueService = host.Services.GetRequiredService<ISQSQueueService>();
+await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(name, new { Message = "Started !!!!" });
+
+await host.RunAsync();

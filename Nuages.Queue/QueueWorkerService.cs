@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace Nuages.Queue;
 
@@ -42,7 +43,7 @@ namespace Nuages.Queue;
             var queueFullName = await queueService.GetQueueFullNameAsync(QueueName);
             if (string.IsNullOrEmpty(queueFullName))
                 throw new Exception($"Queue Url not found for {QueueName}");
-            
+           
             LogInformation($"Starting polling queue : {QueueName}");
             
             while (!stoppingToken.IsCancellationRequested)
@@ -68,7 +69,7 @@ namespace Nuages.Queue;
                     }
                     else
                     {
-                        LogInformation($"0 messages received");
+                        LogInformation("0 messages received");
                         await Task.Delay(TimeSpan.FromSeconds(WaitDelayInMillisecondsWhenNoMessages), stoppingToken);
                     }
                 }
@@ -84,7 +85,7 @@ namespace Nuages.Queue;
 
         protected virtual void LogInformation(string message)
         {
-            Logger.LogInformation(message: $"{message}");
+            Logger.LogInformation($"{message}");
         }
         
         protected virtual void LogError(string message)
