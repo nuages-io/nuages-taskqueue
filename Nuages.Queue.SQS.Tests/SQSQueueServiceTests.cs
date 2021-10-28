@@ -16,9 +16,13 @@ public class SQSQueueServiceTests
     [Fact]
     public async Task PutMessageToQueue()
     {
+        var clientProvider = new Mock<IQueueClientProvider>();
+        
         var sqs = new Mock<IAmazonSQS>();
 
-        IQueueService queueService = new SQSQueueService(sqs.Object);
+        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        
+        IQueueService queueService = new SQSQueueService(clientProvider.Object);
         var res = await queueService.PublishToQueueAsync("name", "data");
         Assert.True(res);
     }
@@ -33,7 +37,12 @@ public class SQSQueueServiceTests
             ReceiptHandle = Guid.NewGuid().ToString()
         };
 
+        var clientProvider = new Mock<IQueueClientProvider>();
+        
         var sqs = new Mock<IAmazonSQS>();
+
+        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        
         sqs.Setup(s => s.ReceiveMessageAsync(It.IsAny<ReceiveMessageRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ReceiveMessageResponse
             {
@@ -43,7 +52,7 @@ public class SQSQueueServiceTests
                 }
             });
 
-        IQueueService queueService = new SQSQueueService(sqs.Object);
+        IQueueService queueService = new SQSQueueService(clientProvider.Object);
 
         var res = await queueService.ReceiveMessageAsync("");
         Assert.Single(res);
@@ -55,8 +64,13 @@ public class SQSQueueServiceTests
     [Fact]
     public async Task DeleteMessage()
     {
+        var clientProvider = new Mock<IQueueClientProvider>();
+        
         var sqs = new Mock<IAmazonSQS>();
-        IQueueService queueService = new SQSQueueService(sqs.Object);
+
+        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        
+        IQueueService queueService = new SQSQueueService(clientProvider.Object);
 
         await queueService.DeleteMessageAsync("url",  "id", "handle");
     }

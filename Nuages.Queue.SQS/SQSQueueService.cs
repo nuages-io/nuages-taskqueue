@@ -10,9 +10,9 @@ public class SQSQueueService : ISQSQueueService
 {
     private readonly IAmazonSQS _sqs;
 
-        public SQSQueueService(IAmazonSQS sqs)
+        public SQSQueueService(IQueueClientProvider sqsProvider)
         {
-            _sqs = sqs;
+            _sqs = sqsProvider.GetClient();
         }
 
         public async Task<bool> PublishToQueueAsync(string queueFullName, string data)

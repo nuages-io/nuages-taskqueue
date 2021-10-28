@@ -20,6 +20,7 @@ public static class TaskASQSConfig
 
         return services.AddScoped<ISQSQueueService, SQSQueueService>()
             .AddScoped<ITaskRunner, TaskRunner>()
+            .AddScoped<IQueueClientProvider, QueueClientProvider>()
             .AddHostedService<TaskQueueWorker<ISQSQueueService>>();
     }
 }
