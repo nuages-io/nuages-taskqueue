@@ -14,8 +14,8 @@ public static class TaskASQConfig
         Action<TaskQueueWorkerOptions>? configureWorker = null,
         Action<QueueClientOptions>? configureClient = null)
     {
-        services.Configure<TaskQueueWorkerOptions>((IConfiguration)configuration.GetSection("QueueWorker"));
-        services.Configure<QueueClientOptions>((IConfiguration)configuration.GetSection("ASQ"));
+        services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("QueueWorker"));
+        services.Configure<QueueClientOptions>(configuration.GetSection("ASQ"));
         
         if (configureWorker != null)
             services.Configure(configureWorker);

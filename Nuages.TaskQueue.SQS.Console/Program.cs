@@ -1,8 +1,10 @@
 ﻿using Amazon;
 using Amazon.Runtime;
 using Amazon.SQS;
+using Microsoft.Extensions.Options;
 using Nuages.Queue.SQS;
 using Nuages.TaskQueue;
+using Nuages.TaskQueue.SQS;
 using Nuages.TaskQueue.Tasks;
 
 var configuration = new ConfigurationBuilder()
@@ -12,11 +14,9 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var section = configuration.GetSection("SQS");
-
 var accessKey = section["AccessKey"];
 var secretKey = section["SecretKey"];
 var region = section["Region"];
-var name = section["QueueName"];
 
 var sqsCLient = new AmazonSQSClient(new BasicAWSCredentials(accessKey, secretKey), RegionEndpoint.GetBySystemName(region));
 
@@ -29,20 +29,19 @@ var hostBuilder = new HostBuilder()
         services
             .AddLogging()
             .AddSingleton(configuration)
-            .AddScoped<ISQSQueueService, SQSQueueService>()
-            .AddScoped<ITaskRunner, TaskRunner>()
             .AddSingleton<IAmazonSQS>(sqsCLient)
-            .AddHostedService<TaskQueueWorker<ISQSQueueService>>()
-            .Configure<TaskQueueWorkerOptions>(config =>
-            {
-                config.QueueName = name;
-                config.Enabled = true;
-            })
+            .AddSQSTaskQueueWorker(configuration)
         );
 
 var host = hostBuilder.UseConsoleLifetime().Build();
 
-var queueService = host.Services.GetRequiredService<ISQSQueueService>();
-await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(name, new { Message = "Started !!!!" });
+await SendTestMessageAsync(host.Services);
 
 await host.RunAsync();
+
+async Task SendTestMessageAsync(IServiceProvider provider)
+{
+    var queueService = provider.GetRequiredService<ISQSQueueService>();
+    var options = provider.GetRequiredService<IOptions<TaskQueueWorkerOptions>>().Value;
+    await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(options.QueueName!, new { Message = "Started !!!!" });
+}

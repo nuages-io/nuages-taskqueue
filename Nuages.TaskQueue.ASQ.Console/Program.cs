@@ -25,11 +25,11 @@ var hostBuilder = new HostBuilder()
 var host = hostBuilder.UseConsoleLifetime().Build();
 
 //Test Message
-await SendTestMessage(host.Services);
+await SendTestMessageAsync(host.Services);
 
 await host.RunAsync();
 
-async Task SendTestMessage(IServiceProvider provider)
+async Task SendTestMessageAsync(IServiceProvider provider)
 {
     var queueService = provider.GetRequiredService<IASQQueueService>();
     var options = provider.GetRequiredService<IOptions<TaskQueueWorkerOptions>>().Value;
