@@ -18,11 +18,17 @@ var hostBuilder = new HostBuilder()
     .ConfigureServices(services =>
         {
             services
-                .AddLogging()
                 .AddSingleton(configuration)
                 .AddSQSTaskQueueWorker(configuration);
 
-            AddSQS(services, true);
+            //Use this to add additional workers. It may be for the same queue or for another queue
+            //.AddSingleton<IHostedService>(sp =>
+            //   TaskQueueWorker<ISQSQueueService>.Create(sp, "TaskQueueTest-2")); 
+
+            //Connection string is provided by IQueueClientProvider.
+            //Provide another service implementation for IQueueClientProvider if you want to control the connection string by queue.
+            
+            AddSQS(services);
         }
     );
 
@@ -36,7 +42,7 @@ async Task SendTestMessageAsync(IServiceProvider provider)
 {
     var queueService = provider.GetRequiredService<ISQSQueueService>();
     var options = provider.GetRequiredService<IOptions<TaskQueueWorkerOptions>>().Value;
-    await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(options.QueueName!, new { Message = "Started !!!!" });
+    await queueService.AddTaskToQueueAsync<OutputToConsoleTask, OutputToConsoleTaskData>(options.QueueName, new OutputToConsoleTaskData { Message = "Started !!!!" });
 }
 
 // ReSharper disable once InconsistentNaming
@@ -50,7 +56,7 @@ void AddSQS(IServiceCollection services, bool useProfile = true)
     }
     else
     {
-        var section = configuration!.GetSection("SQS");
+        var section = configuration.GetSection("SQS");
         var accessKey = section["AccessKey"];
         var secretKey = section["SecretKey"];
         var region = section["Region"];

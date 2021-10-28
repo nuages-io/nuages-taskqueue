@@ -20,7 +20,7 @@ public class SQSQueueServiceTests
         
         var sqs = new Mock<IAmazonSQS>();
 
-        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        clientProvider.Setup(c => c.GetClient("")).Returns(sqs.Object);
         
         IQueueService queueService = new SQSQueueService(clientProvider.Object);
         var res = await queueService.PublishToQueueAsync("name", "data");
@@ -41,7 +41,7 @@ public class SQSQueueServiceTests
         
         var sqs = new Mock<IAmazonSQS>();
 
-        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        clientProvider.Setup(c => c.GetClient("")).Returns(sqs.Object);
         
         sqs.Setup(s => s.ReceiveMessageAsync(It.IsAny<ReceiveMessageRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ReceiveMessageResponse
@@ -68,7 +68,7 @@ public class SQSQueueServiceTests
         
         var sqs = new Mock<IAmazonSQS>();
 
-        clientProvider.Setup(c => c.GetClient()).Returns(sqs.Object);
+        clientProvider.Setup(c => c.GetClient("")).Returns(sqs.Object);
         
         IQueueService queueService = new SQSQueueService(clientProvider.Object);
 

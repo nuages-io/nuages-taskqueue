@@ -5,7 +5,7 @@ namespace Nuages.TaskQueue;
 
 public static class QueueServiceExtension
 {
-    public static async Task AddToTaskQueueAsync<T>(this IQueueService queueService, string name, object data)
+    public static async Task AddTaskToQueueAsync<T, TD>(this IQueueService queueService, string name, TD data)
     {
         var t = new RunnableTaskDefinition
         {

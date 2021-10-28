@@ -1,9 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Nuages.Queue;
 using Nuages.Queue.ASQ;
 
 namespace Nuages.TaskQueue.ASQ;
@@ -16,7 +13,8 @@ public static class TaskASQConfig
     public static IServiceCollection AddASQTaskQueueWorker(this IServiceCollection services, 
         IConfiguration configuration,
         Action<TaskQueueWorkerOptions>? configureWorker = null,
-        Action<ASQQueueClientOptions>? configureClient = null)
+        // ReSharper disable once InconsistentNaming
+        Action<ASQQueueClientOptions>? configureASQClient = null)
     {
         services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("QueueWorker"));
         services.Configure<ASQQueueClientOptions>(configuration.GetSection("ASQ"));
@@ -24,8 +22,8 @@ public static class TaskASQConfig
         if (configureWorker != null)
             services.Configure(configureWorker);
 
-        if (configureClient != null)
-            services.Configure(configureClient);
+        if (configureASQClient != null)
+            services.Configure(configureASQClient);
         
         services.PostConfigure<ASQQueueClientOptions>(options =>
         {
@@ -55,13 +53,10 @@ public static class TaskASQConfig
             }
         });
 
-
         return services.AddScoped<IASQQueueService, ASQQueueService>()
             .AddScoped<ITaskRunner, TaskRunner>()
             .AddScoped<IQueueClientProvider, QueueClientProvider>()
             .AddHostedService<TaskQueueWorker<IASQQueueService>>();
-
-
     }
 
     private static IEnumerable<string> ValidationErrors(object option)

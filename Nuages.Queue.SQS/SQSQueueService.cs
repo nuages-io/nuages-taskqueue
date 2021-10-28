@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using Amazon.SQS;
 using Amazon.SQS.Model;
 
 namespace Nuages.Queue.SQS;
@@ -8,16 +7,16 @@ namespace Nuages.Queue.SQS;
 // ReSharper disable once InconsistentNaming
 public class SQSQueueService : ISQSQueueService
 {
-    private readonly IAmazonSQS _sqs;
+    private readonly IQueueClientProvider _sqsProvider;
 
         public SQSQueueService(IQueueClientProvider sqsProvider)
         {
-            _sqs = sqsProvider.GetClient();
+            _sqsProvider = sqsProvider;
         }
 
         public async Task<bool> PublishToQueueAsync(string queueFullName, string data)
         {
-            await _sqs.SendMessageAsync(new SendMessageRequest
+            await _sqsProvider.GetClient(GetShortName(queueFullName)).SendMessageAsync(new SendMessageRequest
             {
                 QueueUrl = queueFullName,
                 MessageBody = data
@@ -26,9 +25,14 @@ public class SQSQueueService : ISQSQueueService
             return true;
         }
 
+        private static string GetShortName(string queueFullName)
+        {
+            return queueFullName.Split('/').Last();
+        }
+
         public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
         {
-            return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
+            return await PublishToQueueAsync(GetShortName(queueFullName), JsonSerializer.Serialize(data));
         }
 
         public async Task<List<QueueMessage>> ReceiveMessageAsync(string queueFullName, int maxMessages = 1)
@@ -41,7 +45,7 @@ public class SQSQueueService : ISQSQueueService
                 MaxNumberOfMessages = maxMessages
             };
 
-            var messages = await _sqs.ReceiveMessageAsync(request);
+            var messages = await _sqsProvider.GetClient(queueFullName).ReceiveMessageAsync(request);
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var message in messages.Messages)
                 list.Add(new QueueMessage
@@ -62,7 +66,7 @@ public class SQSQueueService : ISQSQueueService
                 ReceiptHandle = receiptHandle
             };
 
-            await _sqs.DeleteMessageAsync(request);
+            await _sqsProvider.GetClient(GetShortName(queueFullName)).DeleteMessageAsync(request);
         }
         
         [ExcludeFromCodeCoverage] //Not able to test, Mock does not work
@@ -70,7 +74,7 @@ public class SQSQueueService : ISQSQueueService
         {
             try
             {
-                var response = await _sqs.GetQueueUrlAsync(new GetQueueUrlRequest
+                var response = await _sqsProvider.GetClient(queueName).GetQueueUrlAsync(new GetQueueUrlRequest
                 {
                     QueueName = queueName
                 });
@@ -80,7 +84,7 @@ public class SQSQueueService : ISQSQueueService
             catch (QueueDoesNotExistException)
             {
                 //You might want to add additionale exception handling here because that may fail
-                var response = await _sqs.CreateQueueAsync(new CreateQueueRequest
+                var response = await _sqsProvider.GetClient(queueName).CreateQueueAsync(new CreateQueueRequest
                 {
                     QueueName = queueName
                 });

@@ -2,7 +2,8 @@ using Amazon.SQS;
 
 namespace Nuages.Queue.SQS;
 
-public partial interface IQueueClientProvider
+public interface IQueueClientProvider
 {
-    IAmazonSQS GetClient();
+    // ReSharper disable once UnusedParameter.Global
+    IAmazonSQS GetClient(string queueName);
 }

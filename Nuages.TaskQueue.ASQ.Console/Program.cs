@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.Extensions.Options;
-using Nuages.Queue;
 using Nuages.Queue.ASQ;
 using Nuages.TaskQueue;
 using Nuages.TaskQueue.ASQ;
@@ -21,20 +20,15 @@ var hostBuilder = new HostBuilder()
         {
             services
                 .AddSingleton(configuration)
-                .AddASQTaskQueueWorker(configuration);
-            // .AddHostedService
-            // (serviceProvider =>
-            //     new TaskQueueWorker<IASQQueueService>(
-            //         serviceProvider,
-            //         serviceProvider.GetRequiredService<ILogger<QueueWorkerService<IASQQueueService>>>(),
-            //         Options.Create(new TaskQueueWorkerOptions
-            //         {
-            //             QueueName = "test-queue-2",
-            //             Enabled = true
-            //
-            //         })));
+                .AddASQTaskQueueWorker(configuration); //This will create the first worker based on the appSettings.json config
+
+            //Use this to add additional workers. It may be for the same queue or for another queue
+            //.AddSingleton<IHostedService>(sp =>
+            //   TaskQueueWorker<IASQQueueService>.Create(sp, "test-queue-2")); 
+
+            //Connection string is provided by IQueueClientProvider.
+            //Provide another service implementation for IQueueClientProvider if you want to control the connection string by queue.
         }
-       
     );
 
 var host = hostBuilder.UseConsoleLifetime().Build();
@@ -49,5 +43,6 @@ async Task SendTestMessageAsync(IServiceProvider provider)
     var queueService = provider.GetRequiredService<IASQQueueService>();
     var options = provider.GetRequiredService<IOptions<TaskQueueWorkerOptions>>().Value;
 
-    await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(options.QueueName!, new { Message = "Started !!!!" });
+    await queueService.AddTaskToQueueAsync<OutputToConsoleTask, OutputToConsoleTaskData>(options.QueueName, new OutputToConsoleTaskData { Message = "Started !!!!" });
 }
+

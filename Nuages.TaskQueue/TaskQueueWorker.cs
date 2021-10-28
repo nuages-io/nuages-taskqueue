@@ -8,16 +8,29 @@ using Nuages.Queue;
 namespace Nuages.TaskQueue;
 
 [ExcludeFromCodeCoverage]
-public class TaskQueueWorker<T> : QueueWorkerService<T> where T : IQueueService
+public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 {
     private readonly TaskQueueWorkerOptions _options;
     private ITaskRunner? _jobRunner;
         
-    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorkerService<T>> logger, IOptions<TaskQueueWorkerOptions> options) : base(serviceProvider, logger)
+    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger, IOptions<TaskQueueWorkerOptions> options) : base(serviceProvider, logger)
     {
         _options = options.Value;
     }
 
+    // ReSharper disable once UnusedMember.Global
+    public static  TaskQueueWorker<T> Create(IServiceProvider sp, string queueName)
+    {
+        return new TaskQueueWorker<T>(
+            sp,
+            sp.GetRequiredService<ILogger<QueueWorker<T>>>(),
+            Options.Create(new TaskQueueWorkerOptions
+            {
+                QueueName = queueName,
+                Enabled = true
+            }));
+    }
+    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var scope = ServiceProvider.CreateScope();
@@ -34,8 +47,7 @@ public class TaskQueueWorker<T> : QueueWorkerService<T> where T : IQueueService
 
         if (string.IsNullOrEmpty(QueueName))
             throw new NullReferenceException("QueueName must be provided");
-        
-        
+
         await base.ExecuteAsync(stoppingToken);
     }
 

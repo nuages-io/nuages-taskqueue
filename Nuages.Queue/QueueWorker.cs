@@ -10,16 +10,16 @@ namespace Nuages.Queue;
     [ExcludeFromCodeCoverage]
   
     // ReSharper disable once UnusedType.Global
-    public abstract class QueueWorkerService<T> : BackgroundService where T : IQueueService
+    public abstract class QueueWorker<T> : BackgroundService where T : IQueueService
     {
         protected string? QueueName { get; set; }
         protected int MaxMessagesCount { get; set; } = 10;
         protected int WaitDelayInMillisecondsWhenNoMessages { get; set; } = 1000;
         
         protected readonly IServiceProvider ServiceProvider;
-        protected readonly ILogger<QueueWorkerService<T>> Logger;
+        protected readonly ILogger<QueueWorker<T>> Logger;
 
-        protected QueueWorkerService(IServiceProvider serviceProvider, ILogger<QueueWorkerService<T>> logger)
+        protected QueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger)
         {
             ServiceProvider = serviceProvider;
             Logger = logger;
@@ -30,11 +30,6 @@ namespace Nuages.Queue;
         {
             if (string.IsNullOrEmpty(QueueName))
                 throw new Exception("QueueName must be provided");
-            
-            //The queue service is registered as scope because we might want to have more than one backgroud queue service in the same app.
-            //Since the BackgroundWorkerService is not a scoped service, it will throw an exception if we try to inject a scoped service
-            //We muste then create a new scope and use is to instantiuate the required service
-            //You may register IQueueService as a singleton and inject it in the constructor if you like. Your choice.
             
             using var scope = ServiceProvider.CreateScope();
 

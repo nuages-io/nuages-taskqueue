@@ -11,7 +11,7 @@ public class QueueClientProvider : IQueueClientProvider
         _sqs = sqs;
     }
     
-    public IAmazonSQS GetClient()
+    public IAmazonSQS GetClient(string queueName)
     {
         return _sqs;
     }
