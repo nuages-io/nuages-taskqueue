@@ -1,6 +1,7 @@
 namespace Nuages.Queue.ASQ;
 
-public interface IAsqQueueService : IQueueService
+// ReSharper disable once InconsistentNaming
+public interface IASQQueueService : IQueueService
 {
     
 }

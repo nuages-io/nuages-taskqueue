@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace Nuages.Queue.ASQ;
 
 // ReSharper disable once InconsistentNaming
-public class ASQQueueService : IAsqQueueService
+public class ASQQueueService : IASQQueueService
 {
     private readonly IQueueClientProvider _clientProvider;
 

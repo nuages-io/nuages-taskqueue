@@ -6,15 +6,15 @@ namespace Nuages.Queue.ASQ;
 // ReSharper disable once UnusedType.Global
 public class QueueClientProvider : IQueueClientProvider
 {
-    private readonly IOptionsMonitor<QueueClientOptions> _options;
+    private readonly QueueClientOptions _options;
 
-    public QueueClientProvider(IOptionsMonitor<QueueClientOptions> options)
+    public QueueClientProvider(IOptions<QueueClientOptions> options)
     {
-        _options = options;
+        _options = options.Value;
     }
     
     public QueueClient GetClient(string queueName)
     {
-        return new QueueClient(_options.CurrentValue.ConnectionString, queueName);
+        return new QueueClient(_options.ConnectionString, queueName);
     }
 }
