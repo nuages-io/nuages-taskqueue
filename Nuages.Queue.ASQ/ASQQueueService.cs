@@ -20,7 +20,7 @@ public class ASQQueueService : IASQQueueService
         return await Task.FromResult(queueName);
     }
 
-    public async Task<bool> PublishToQueueAsync(string fullQueueName, string data)
+    public async Task<string?> PublishToQueueAsync(string fullQueueName, string data)
     {
         var client = _clientProvider.GetClient(fullQueueName);
 
@@ -28,11 +28,12 @@ public class ASQQueueService : IASQQueueService
         if (_queryOptions.AutoCreateQueue)
             await client.CreateIfNotExistsAsync();
 
-        await client.SendMessageAsync(data);
-        return true;
+        var res = await client.SendMessageAsync(data);
+        
+        return res.Value.MessageId;
     }
     
-    public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
+    public async Task<string?> PublishToQueueAsync(string queueFullName, object data)
     {
         return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }

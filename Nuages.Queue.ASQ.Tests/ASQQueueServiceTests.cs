@@ -1,9 +1,4 @@
-
-
-using System;
 using System.Threading.Tasks;
-using Azure.Storage.Queues;
-using Moq;
 using Xunit;
 
 namespace Nuages.Queue.ASQ.Tests;

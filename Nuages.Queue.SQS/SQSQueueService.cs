@@ -17,23 +17,25 @@ public class SQSQueueService : ISQSQueueService
         _queryOptions = queryOptions.Value;
     }
 
-    public async Task<bool> PublishToQueueAsync(string queueFullName, string data)
+    public async Task<string?> PublishToQueueAsync(string queueFullName, string data)
     {
-        await _sqsProvider.GetClient(GetShortName(queueFullName)).SendMessageAsync(new SendMessageRequest
+        var request = new SendMessageRequest
         {
             QueueUrl = queueFullName,
             MessageBody = data
-        });
+        };
+        
+        var result = await _sqsProvider.GetClient(GetShortName(queueFullName)).SendMessageAsync(request);
 
-        return true;
+        return result.MessageId;
     }
 
-    private static string GetShortName(string queueFullName)
+    public static string GetShortName(string queueFullName)
     {
         return queueFullName.Split('/').Last();
     }
 
-    public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
+    public async Task<string?> PublishToQueueAsync(string queueFullName, object data)
     {
         return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }
