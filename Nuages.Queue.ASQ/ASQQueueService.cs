@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 
 namespace Nuages.Queue.ASQ;
 
@@ -6,10 +7,12 @@ namespace Nuages.Queue.ASQ;
 public class ASQQueueService : IASQQueueService
 {
     private readonly IQueueClientProvider _clientProvider;
+    private readonly QueueOptions _queryOptions;
 
-    public ASQQueueService(IQueueClientProvider clientProvider)
+    public ASQQueueService(IQueueClientProvider clientProvider, IOptions<QueueOptions> queryOptions)
     {
         _clientProvider = clientProvider;
+        _queryOptions = queryOptions.Value;
     }
     
     public async Task<string?> GetQueueFullNameAsync(string queueName)
@@ -22,16 +25,11 @@ public class ASQQueueService : IASQQueueService
         var client = _clientProvider.GetClient(fullQueueName);
 
         // Create the queue if it doesn't already exist
-        await client.CreateIfNotExistsAsync();
+        if (_queryOptions.AutoCreateQueue)
+            await client.CreateIfNotExistsAsync();
 
-        if (await client.ExistsAsync())
-        {
-            // Send a message to the queue
-           await client.SendMessageAsync(data);
-           return true;
-        }
-
-        return false;
+        await client.SendMessageAsync(data);
+        return true;
     }
     
     public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
@@ -42,7 +40,9 @@ public class ASQQueueService : IASQQueueService
     public async Task<List<QueueMessage>> ReceiveMessageAsync(string fullQueueName, int maxMessages = 1)
     {
         var client = _clientProvider.GetClient(fullQueueName);
-        await client.CreateIfNotExistsAsync();
+        
+        if (_queryOptions.AutoCreateQueue)
+            await client.CreateIfNotExistsAsync();
         
         var messages = await client.ReceiveMessagesAsync(maxMessages);
 
@@ -52,7 +52,9 @@ public class ASQQueueService : IASQQueueService
     public async Task DeleteMessageAsync(string fullQueueName, string id, string receiptHandle)
     {
         var client = _clientProvider.GetClient(fullQueueName);
-        await client.CreateIfNotExistsAsync();
+        
+        if (_queryOptions.AutoCreateQueue)
+            await client.CreateIfNotExistsAsync();
         
         await client.DeleteMessageAsync(id, receiptHandle);
     }

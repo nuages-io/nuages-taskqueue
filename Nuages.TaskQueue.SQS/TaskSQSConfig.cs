@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nuages.Queue;
 using Nuages.Queue.SQS;
 
 namespace Nuages.TaskQueue.SQS;
@@ -12,13 +13,20 @@ public static class TaskASQSConfig
     // ReSharper disable once UnusedMethodReturnValue.Global
     public static IServiceCollection AddSQSTaskQueueWorker(this IServiceCollection services, 
         IConfiguration configuration,
+        Action<QueueOptions>? configureQueues = null,
         Action<TaskQueueWorkerOptions>? configureWorker = null)
+       
     {
-        services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("QueueWorker"));
+        services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
+        services.Configure<QueueOptions>(configuration.GetSection("Queues"));
         
         if (configureWorker != null)
             services.Configure(configureWorker);
 
+        if (configureQueues != null)
+            services.Configure(configureQueues);
+
+        
         services.PostConfigure<TaskQueueWorkerOptions>(options =>
         {
             var configErrors = ValidationErrors(options).ToArray();
