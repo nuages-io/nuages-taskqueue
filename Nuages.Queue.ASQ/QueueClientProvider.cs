@@ -6,9 +6,9 @@ namespace Nuages.Queue.ASQ;
 // ReSharper disable once UnusedType.Global
 public class QueueClientProvider : IQueueClientProvider
 {
-    private readonly QueueClientOptions _options;
+    private readonly ASQQueueClientOptions _options;
 
-    public QueueClientProvider(IOptions<QueueClientOptions> options)
+    public QueueClientProvider(IOptions<ASQQueueClientOptions> options)
     {
         _options = options.Value;
     }

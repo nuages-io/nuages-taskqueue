@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue.SQS;
@@ -18,9 +19,31 @@ public static class TaskASQSConfig
         if (configureWorker != null)
             services.Configure(configureWorker);
 
+        services.PostConfigure<TaskQueueWorkerOptions>(options =>
+        {
+            var configErrors = ValidationErrors(options).ToArray();
+            // ReSharper disable once InvertIf
+            if (configErrors.Any())
+            {
+                var aggregateErrors = string.Join(",", configErrors);
+                var count = configErrors.Length;
+                var configType = options.GetType().Name;
+                throw new ApplicationException(
+                    $"Found {count} configuration error(s) in {configType}: {aggregateErrors}");
+            }
+        });
+        
         return services.AddScoped<ISQSQueueService, SQSQueueService>()
             .AddScoped<ITaskRunner, TaskRunner>()
             .AddScoped<IQueueClientProvider, QueueClientProvider>()
             .AddHostedService<TaskQueueWorker<ISQSQueueService>>();
+    }
+    
+    private static IEnumerable<string> ValidationErrors(object option)
+    {
+        var context = new ValidationContext(option, null);
+        var results = new List<ValidationResult>();
+        Validator.TryValidateObject(option, context, results, true);
+        foreach (var validationResult in results) yield return validationResult.ErrorMessage ?? "?";
     }
 }

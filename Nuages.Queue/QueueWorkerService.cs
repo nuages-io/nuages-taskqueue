@@ -14,7 +14,7 @@ namespace Nuages.Queue;
     {
         protected string? QueueName { get; set; }
         protected int MaxMessagesCount { get; set; } = 10;
-        protected int WaitDelayInMillisecondsWhenNoMessages { get; set; } = 15;
+        protected int WaitDelayInMillisecondsWhenNoMessages { get; set; } = 1000;
         
         protected readonly IServiceProvider ServiceProvider;
         protected readonly ILogger<QueueWorkerService<T>> Logger;
@@ -54,7 +54,7 @@ namespace Nuages.Queue;
 
                     if (messages.Any())
                     {
-                        LogInformation($"{messages.Count} messages received");
+                        LogInformation($"{messages.Count} messages received {queueFullName}");
 
                         foreach (var msg in messages)
                         {
@@ -62,15 +62,15 @@ namespace Nuages.Queue;
 
                             if (result)
                             {
-                                LogInformation($"{msg.MessageId} processed with success");
+                                LogInformation($"{msg.MessageId} processed with success {queueFullName}");
                                 await queueService.DeleteMessageAsync( queueFullName, msg.MessageId, msg.Handle);
                             }
                         }
                     }
                     else
                     {
-                        LogInformation("0 messages received");
-                        await Task.Delay(TimeSpan.FromSeconds(WaitDelayInMillisecondsWhenNoMessages), stoppingToken);
+                        LogInformation($"0 messages received {queueFullName}");
+                        await Task.Delay(TimeSpan.FromMilliseconds(WaitDelayInMillisecondsWhenNoMessages), stoppingToken);
                     }
                 }
                 catch (Exception ex)

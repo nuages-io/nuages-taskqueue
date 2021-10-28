@@ -14,18 +14,17 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var hostBuilder = new HostBuilder()
-    .ConfigureLogging(logging =>
-    {
-        logging.AddConsole();
-    })
+    .ConfigureLogging(logging => { logging.AddConsole(); })
     .ConfigureServices(services =>
-        services
-            .AddLogging()
-            .AddAWSService<IAmazonSQS>() //BY default, we use a SQS profile to get credentials https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
-           //.AddSingleton<IAmazonSQS>(CreateClient()) //You may want to provide a AmazonSQSClient instance instead.
-            .AddSingleton(configuration)
-            .AddSQSTaskQueueWorker(configuration)
-        );
+        {
+            services
+                .AddLogging()
+                .AddSingleton(configuration)
+                .AddSQSTaskQueueWorker(configuration);
+
+            AddSQS(services, true);
+        }
+    );
 
 var host = hostBuilder.UseConsoleLifetime().Build();
 
@@ -40,15 +39,25 @@ async Task SendTestMessageAsync(IServiceProvider provider)
     await queueService.AddToTaskQueueAsync<OutputToConsoleTask>(options.QueueName!, new { Message = "Started !!!!" });
 }
 
-
-#pragma warning disable CS8321
-IAmazonSQS CreateClient()
-#pragma warning restore CS8321
+// ReSharper disable once InconsistentNaming
+void AddSQS(IServiceCollection services, bool useProfile = true)
 {
-    var section = configuration!.GetSection("SQS");
-    var accessKey = section["AccessKey"];
-    var secretKey = section["SecretKey"];
-    var region = section["Region"];
+    if (useProfile)
+    {
+        //By default, we use a SQS profile to get credentials https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions())
+            .AddAWSService<IAmazonSQS>();
+    }
+    else
+    {
+        var section = configuration!.GetSection("SQS");
+        var accessKey = section["AccessKey"];
+        var secretKey = section["SecretKey"];
+        var region = section["Region"];
 
-    return new AmazonSQSClient(new BasicAWSCredentials(accessKey, secretKey), RegionEndpoint.GetBySystemName(region));
+        var sqsClient = new AmazonSQSClient(new BasicAWSCredentials(accessKey, secretKey),
+            RegionEndpoint.GetBySystemName(region));
+
+        services.AddSingleton<IAmazonSQS>(sqsClient);
+    }
 }

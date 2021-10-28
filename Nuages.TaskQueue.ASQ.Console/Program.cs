@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Extensions.Options;
+using Nuages.Queue;
 using Nuages.Queue.ASQ;
 using Nuages.TaskQueue;
 using Nuages.TaskQueue.ASQ;
@@ -17,9 +18,23 @@ var hostBuilder = new HostBuilder()
         logging.AddConsole();
     })
     .ConfigureServices(services =>
-        services
-            .AddSingleton(configuration)
-            .AddASQTaskQueueWorker(configuration)
+        {
+            services
+                .AddSingleton(configuration)
+                .AddASQTaskQueueWorker(configuration);
+            // .AddHostedService
+            // (serviceProvider =>
+            //     new TaskQueueWorker<IASQQueueService>(
+            //         serviceProvider,
+            //         serviceProvider.GetRequiredService<ILogger<QueueWorkerService<IASQQueueService>>>(),
+            //         Options.Create(new TaskQueueWorkerOptions
+            //         {
+            //             QueueName = "test-queue-2",
+            //             Enabled = true
+            //
+            //         })));
+        }
+       
     );
 
 var host = hostBuilder.UseConsoleLifetime().Build();

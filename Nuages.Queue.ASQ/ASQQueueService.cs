@@ -28,9 +28,10 @@ public class ASQQueueService : IASQQueueService
         {
             // Send a message to the queue
            await client.SendMessageAsync(data);
+           return true;
         }
-        
-        return true;
+
+        return false;
     }
     
     public async Task<bool> PublishToQueueAsync(string queueFullName, object data)
@@ -41,6 +42,8 @@ public class ASQQueueService : IASQQueueService
     public async Task<List<QueueMessage>> ReceiveMessageAsync(string fullQueueName, int maxMessages = 1)
     {
         var client = _clientProvider.GetClient(fullQueueName);
+        await client.CreateIfNotExistsAsync();
+        
         var messages = await client.ReceiveMessagesAsync(maxMessages);
 
         return messages.Value.Select(message => new QueueMessage { MessageId = message.MessageId, Body = message.MessageText, Handle = message.PopReceipt }).ToList();
@@ -49,6 +52,8 @@ public class ASQQueueService : IASQQueueService
     public async Task DeleteMessageAsync(string fullQueueName, string id, string receiptHandle)
     {
         var client = _clientProvider.GetClient(fullQueueName);
+        await client.CreateIfNotExistsAsync();
+        
         await client.DeleteMessageAsync(id, receiptHandle);
     }
 }
