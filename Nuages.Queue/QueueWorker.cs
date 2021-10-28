@@ -25,7 +25,6 @@ namespace Nuages.Queue;
             Logger = logger;
         }
         
-        
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             if (string.IsNullOrEmpty(QueueName))

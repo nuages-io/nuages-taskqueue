@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue;
@@ -7,6 +8,7 @@ using Nuages.Queue.SQS;
 namespace Nuages.TaskQueue.SQS;
 
 // ReSharper disable once InconsistentNaming
+[ExcludeFromCodeCoverage]
 public static class TaskASQSConfig
 {
     // ReSharper disable once InconsistentNaming
@@ -15,7 +17,6 @@ public static class TaskASQSConfig
         IConfiguration configuration,
         Action<QueueOptions>? configureQueues = null,
         Action<TaskQueueWorkerOptions>? configureWorker = null)
-       
     {
         services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
         services.Configure<QueueOptions>(configuration.GetSection("Queues"));
@@ -26,7 +27,6 @@ public static class TaskASQSConfig
         if (configureQueues != null)
             services.Configure(configureQueues);
 
-        
         services.PostConfigure<TaskQueueWorkerOptions>(options =>
         {
             var configErrors = ValidationErrors(options).ToArray();
