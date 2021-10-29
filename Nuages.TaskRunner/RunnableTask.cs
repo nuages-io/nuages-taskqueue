@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Nuages.TaskQueue;
+namespace Nuages.TaskRunner;
 
 public abstract class RunnableTask<T> : IRunnableTask
 {

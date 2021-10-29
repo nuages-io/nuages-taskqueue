@@ -1,4 +1,6 @@
-namespace Nuages.TaskQueue.Tasks;
+
+
+namespace Nuages.TaskRunner.Tasks;
 
 // ReSharper disable once UnusedType.Global
 // ReSharper disable once ClassNeverInstantiated.Global

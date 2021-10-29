@@ -1,4 +1,4 @@
-namespace Nuages.TaskQueue;
+namespace Nuages.TaskRunner;
 
 public interface IRunnableTask
 {

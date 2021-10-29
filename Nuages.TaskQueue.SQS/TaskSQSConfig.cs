@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue.SQS;
+using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue.SQS;
 
@@ -41,7 +42,7 @@ public static class TaskASQSConfig
         });
         
         return services.AddScoped<ISQSQueueService, SQSQueueService>()
-            .AddScoped<ITaskRunner, TaskRunner>()
+            .AddScoped<ITaskRunnerService, TaskRunnerService>()
             .AddScoped<IQueueClientProvider, QueueClientProvider>()
             .AddHostedService<TaskQueueWorker<ISQSQueueService>>();
     }

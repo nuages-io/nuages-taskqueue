@@ -1,6 +1,6 @@
-namespace Nuages.TaskQueue;
+namespace Nuages.TaskRunner;
 
-public interface ITaskRunner
+public interface ITaskRunnerService
 {
     Task ExecuteAsync(string assemblyQualifiedName, string jsonPayload);
 }

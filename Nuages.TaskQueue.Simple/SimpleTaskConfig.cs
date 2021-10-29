@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue.Simple;
+using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue.Simple;
 
@@ -35,7 +36,7 @@ public static class SimpleTaskConfig
         });
 
         return services.AddScoped<ISimpleQueueService, SimpleQueueService>()
-            .AddScoped<ITaskRunner, TaskRunner>()
+            .AddScoped<ITaskRunnerService, TaskRunnerService>()
             .AddHostedService<TaskQueueWorker<ISimpleQueueService>>();
     }
 

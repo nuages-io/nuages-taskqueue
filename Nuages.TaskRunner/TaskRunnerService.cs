@@ -1,13 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Nuages.TaskQueue;
+namespace Nuages.TaskRunner;
 
 // ReSharper disable once UnusedType.Global
-public class TaskRunner : ITaskRunner
+public class TaskRunnerService : ITaskRunnerService
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public TaskRunner(IServiceProvider serviceProvider)
+    public TaskRunnerService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

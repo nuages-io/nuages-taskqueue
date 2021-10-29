@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nuages.Queue;
+using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue;
 
@@ -14,7 +15,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     private string? QueueNameFullName { get; set; }
     
     private readonly TaskQueueWorkerOptions _options;
-    private ITaskRunner? _jobRunner;
+    private ITaskRunnerService? _jobRunner;
         
     public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger, 
                             IOptions<TaskQueueWorkerOptions> options) : base(serviceProvider, logger)
@@ -48,7 +49,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
             
         _jobRunner =
             scope.ServiceProvider
-                .GetRequiredService<ITaskRunner>();
+                .GetRequiredService<ITaskRunnerService>();
             
         var enable = _options.Enabled;
         if (!enable)

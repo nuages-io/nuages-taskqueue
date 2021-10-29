@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue.ASQ;
+using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue.ASQ;
 
@@ -59,7 +60,7 @@ public static class TaskASQConfig
         });
 
         return services.AddScoped<IASQQueueService, ASQQueueService>()
-            .AddScoped<ITaskRunner, TaskRunner>()
+            .AddScoped<ITaskRunnerService, TaskRunnerService>()
             .AddScoped<IQueueClientProvider, QueueClientProvider>()
             .AddHostedService<TaskQueueWorker<IASQQueueService>>();
     }
