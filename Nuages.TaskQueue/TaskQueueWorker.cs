@@ -96,11 +96,11 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 
     protected override void LogInformation(string message)
     {
-        Logger.LogInformation($"{message} : {QueueNameFullName}");
+        Logger.LogInformation("{message} : {QueueNameFullName}",message, QueueNameFullName);
     }
     
     protected override void LogError(string message)
     {
-        Logger.LogError($"{message} : {QueueNameFullName}");
+        Logger.LogError("{message} : {QueueNameFullName}",message, QueueNameFullName);
     }
 }

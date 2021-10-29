@@ -79,11 +79,11 @@ namespace Nuages.Queue;
 
         protected virtual void LogInformation(string message)
         {
-            Logger.LogInformation($"{message}");
+            Logger.LogInformation("{message}", message);
         }
         
         protected virtual void LogError(string message)
         {
-            Logger.LogError($"{message}");
+            Logger.LogError("{message}", message);
         }
     }
