@@ -17,12 +17,12 @@ public class SQSQueueService : ISQSQueueService
         _queryOptions = queryOptions.Value;
     }
 
-    public async Task<string?> PublishToQueueAsync(string queueFullName, string data)
+    public async Task<string?> PublishToQueueAsync(string queueFullName, string text)
     {
         var request = new SendMessageRequest
         {
             QueueUrl = queueFullName,
-            MessageBody = data
+            MessageBody = text
         };
         
         var result = await _sqsProvider.GetClient(GetShortName(queueFullName)).SendMessageAsync(request);

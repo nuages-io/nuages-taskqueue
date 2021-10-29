@@ -1,4 +1,4 @@
-namespace Nuages.Queue;
+namespace Nuages.Queue.ASQ;
 
 public class QueueOptions
 {

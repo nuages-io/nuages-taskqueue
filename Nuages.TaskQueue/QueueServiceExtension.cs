@@ -17,4 +17,9 @@ public static class QueueServiceExtension
 
         await queueService.PublishToQueueAsync(fullName!, t);
     }
+    
+    public static async Task<string?> PublishToQueueAsync(this IQueueService queueService, string queueFullName, object data)
+    {
+        return await queueService.PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
+    }
 }
