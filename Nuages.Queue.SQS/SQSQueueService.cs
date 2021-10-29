@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
 
@@ -33,11 +32,6 @@ public class SQSQueueService : ISQSQueueService
     public static string GetShortName(string queueFullName)
     {
         return queueFullName.Split('/').Last();
-    }
-
-    public async Task<string?> PublishToQueueAsync(string queueFullName, object data)
-    {
-        return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }
 
     public async Task<List<QueueMessage>> ReceiveMessageAsync(string queueFullName, int maxMessages = 1)

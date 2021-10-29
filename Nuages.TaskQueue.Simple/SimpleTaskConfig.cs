@@ -1,48 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nuages.Queue.ASQ;
+using Nuages.Queue.Simple;
 
-namespace Nuages.TaskQueue.ASQ;
+namespace Nuages.TaskQueue.Simple;
 
 // ReSharper disable once InconsistentNaming
-public static class TaskASQConfig
+public static class SimpleTaskConfig
 {
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once UnusedMethodReturnValue.Global
-    public static IServiceCollection AddASQTaskQueueWorker(this IServiceCollection services, 
+    public static IServiceCollection AddTaskQueueWorker(this IServiceCollection services, 
         IConfiguration configuration,
-        Action<QueueOptions>? configureQueues = null,
         // ReSharper disable once InconsistentNaming
-        Action<ASQQueueClientOptions>? configureASQClient = null,
         Action<TaskQueueWorkerOptions>? configureWorker = null)
     {
         services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
-        services.Configure<ASQQueueClientOptions>(configuration.GetSection("ASQ"));
-        services.Configure<QueueOptions>(configuration.GetSection("Queues"));
         
         if (configureWorker != null)
             services.Configure(configureWorker);
-
-        if (configureASQClient != null)
-            services.Configure(configureASQClient);
-        
-        if (configureQueues != null)
-            services.Configure(configureQueues);
-        
-        services.PostConfigure<ASQQueueClientOptions>(options =>
-        {
-            var configErrors = ValidationErrors(options).ToArray();
-            // ReSharper disable once InvertIf
-            if (configErrors.Any())
-            {
-                var aggregateErrors = string.Join(",", configErrors);
-                var count = configErrors.Length;
-                var configType = options.GetType().Name;
-                throw new ApplicationException(
-                    $"Found {count} configuration error(s) in {configType}: {aggregateErrors}");
-            }
-        });
         
         services.PostConfigure<TaskQueueWorkerOptions>(options =>
         {
@@ -58,10 +34,9 @@ public static class TaskASQConfig
             }
         });
 
-        return services.AddScoped<IASQQueueService, ASQQueueService>()
+        return services.AddScoped<ISimpleQueueService, SimpleQueueService>()
             .AddScoped<ITaskRunner, TaskRunner>()
-            .AddScoped<IQueueClientProvider, QueueClientProvider>()
-            .AddHostedService<TaskQueueWorker<IASQQueueService>>();
+            .AddHostedService<TaskQueueWorker<ISimpleQueueService>>();
     }
 
     private static IEnumerable<string> ValidationErrors(object option)

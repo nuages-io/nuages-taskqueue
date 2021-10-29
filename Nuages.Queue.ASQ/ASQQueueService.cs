@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.Extensions.Options;
 
 namespace Nuages.Queue.ASQ;
@@ -31,11 +30,6 @@ public class ASQQueueService : IASQQueueService
         var res = await client.SendMessageAsync(text);
         
         return res.Value.MessageId;
-    }
-    
-    public async Task<string?> PublishToQueueAsync(string queueFullName, object data)
-    {
-        return await PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }
 
     public async Task<List<QueueMessage>> ReceiveMessageAsync(string fullQueueName, int maxMessages = 1)

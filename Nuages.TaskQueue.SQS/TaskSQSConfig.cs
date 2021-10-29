@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nuages.Queue;
 using Nuages.Queue.SQS;
 
 namespace Nuages.TaskQueue.SQS;

@@ -12,13 +12,12 @@ namespace Nuages.Queue;
     // ReSharper disable once UnusedType.Global
     public abstract class QueueWorker<T> : BackgroundService where T : IQueueService
     {
-        protected string? QueueName { get; set; }
         protected int MaxMessagesCount { get; set; } = 10;
         protected int WaitDelayInMillisecondsWhenNoMessages { get; set; } = 1000;
         
         protected readonly IServiceProvider ServiceProvider;
         protected readonly ILogger<QueueWorker<T>> Logger;
-
+        
         protected QueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger)
         {
             ServiceProvider = serviceProvider;
@@ -27,28 +26,21 @@ namespace Nuages.Queue;
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            if (string.IsNullOrEmpty(QueueName))
-                throw new Exception("QueueName must be provided");
-            
             using var scope = ServiceProvider.CreateScope();
 
             var queueService = scope.ServiceProvider.GetRequiredService<T>();
-            
-            var queueFullName = await queueService.GetQueueFullNameAsync(QueueName);
-            if (string.IsNullOrEmpty(queueFullName))
-                throw new Exception($"Queue Url not found for {QueueName}");
-           
-            LogInformation($"Starting polling queue : {QueueName}");
+
+            await InitializeAsync(queueService);
             
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    var messages = await queueService.ReceiveMessageAsync(queueFullName, MaxMessagesCount);
+                    var messages = await ReceiveMessageAsync(queueService);
 
                     if (messages.Any())
                     {
-                        LogInformation($"{messages.Count} messages received {queueFullName}");
+                        LogInformation($"{messages.Count} messages received");
 
                         foreach (var msg in messages)
                         {
@@ -56,14 +48,14 @@ namespace Nuages.Queue;
 
                             if (result)
                             {
-                                LogInformation($"{msg.MessageId} processed with success {queueFullName}");
-                                await queueService.DeleteMessageAsync( queueFullName, msg.MessageId, msg.Handle);
+                                LogInformation($"{msg.MessageId} processed with success ");
+                                await DeleteMessageAsync(queueService, msg.MessageId, msg.Handle);
                             }
                         }
                     }
                     else
                     {
-                        LogInformation($"0 messages received {queueFullName}");
+                        LogInformation("0 messages received");
                         await Task.Delay(TimeSpan.FromMilliseconds(WaitDelayInMillisecondsWhenNoMessages), stoppingToken);
                     }
                 }
@@ -75,6 +67,14 @@ namespace Nuages.Queue;
             }
         }
 
+        protected abstract Task<List<QueueMessage>> ReceiveMessageAsync(T queueService);
+        protected abstract Task DeleteMessageAsync(T queueService, string id, string receiptHandle);
+
+        protected virtual async Task InitializeAsync(T queueService)
+        {
+           await  Task.FromResult(0);
+        }
+        
         protected abstract Task<bool> ProcessMessageAsync(QueueMessage msg);
 
         protected virtual void LogInformation(string message)

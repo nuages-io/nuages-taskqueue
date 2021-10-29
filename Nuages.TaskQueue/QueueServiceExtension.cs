@@ -5,7 +5,8 @@ namespace Nuages.TaskQueue;
 
 public static class QueueServiceExtension
 {
-    public static async Task AddTaskToQueueAsync<T, TD>(this IQueueService queueService, string name, TD data)
+    // ReSharper disable once UnusedMethodReturnValue.Global
+    public static async Task<string?> AddTaskToQueueAsync<T, TD>(this IQueueService queueService, string name, TD data)
     {
         var t = new RunnableTaskDefinition
         {
@@ -15,10 +16,10 @@ public static class QueueServiceExtension
         
         var fullName = await queueService.GetQueueFullNameAsync(name);
 
-        await queueService.PublishToQueueAsync(fullName!, t);
+        return await queueService.PublishToQueueAsync(fullName!, t);
     }
-    
-    public static async Task<string?> PublishToQueueAsync(this IQueueService queueService, string queueFullName, object data)
+
+    private static async Task<string?> PublishToQueueAsync(this IQueueService queueService, string queueFullName, object data)
     {
         return await queueService.PublishToQueueAsync(queueFullName, JsonSerializer.Serialize(data));
     }
