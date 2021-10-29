@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{994BD06D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{5DB75B80-24DD-489B-9C45-609D010B6873}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskQueue.Console", "Nuages.TaskQueue.Console\Nuages.TaskQueue.Console.csproj", "{08AE67A5-350D-4EBA-BE46-FD5A66C4D388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskQueue.Simple.Console", "Nuages.TaskQueue.Simple.Console\Nuages.TaskQueue.Simple.Console.csproj", "{08AE67A5-350D-4EBA-BE46-FD5A66C4D388}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskQueue", "TaskQueue", "{401D6856-C02B-46D5-AD1B-6DE2F0906EE3}"
 EndProject

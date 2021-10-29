@@ -5,7 +5,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Nuages.TaskQueue.Console</RootNamespace>
+        <RootNamespace>Nuages.TaskQueue.Simple.Console</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
