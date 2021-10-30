@@ -20,6 +20,7 @@
       <ProjectReference Include="..\Nuages.Queue.ASQ\Nuages.Queue.ASQ.csproj" />
       <ProjectReference Include="..\Nuages.TaskQueue.ASQ\Nuages.TaskQueue.ASQ.csproj" />
       <ProjectReference Include="..\Nuages.TaskQueue\Nuages.TaskQueue.csproj" />
+      <ProjectReference Include="..\Nuages.TaskRunner.Samples\Nuages.TaskRunner.Samples.csproj" />
     </ItemGroup>
 
     <ItemGroup>

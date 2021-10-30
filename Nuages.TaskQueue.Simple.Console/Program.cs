@@ -2,7 +2,7 @@
 using Nuages.Queue.Simple;
 using Nuages.TaskQueue;
 using Nuages.TaskQueue.Simple;
-using Nuages.TaskRunner.Tasks;
+using Nuages.TaskRunner.Samples;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
