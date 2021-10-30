@@ -6,14 +6,11 @@ namespace Nuages.TaskRunner.Samples;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class OutputToConsoleTask : RunnableTask<OutputToConsoleTaskData>
 {
-    public override async Task ExecuteAsync(OutputToConsoleTaskData? data)
+    public override async Task ExecuteAsync(OutputToConsoleTaskData data)
     {
         await Task.Run(() =>
         {
-            if (data != null)
-            {
-                Console.WriteLine(data.Message);
-            }
+            Console.WriteLine(data.Message);
         });
     }
 }

@@ -31,7 +31,7 @@ public class SQSQueueServiceTests
          clientProvider.Setup(c => c.GetClient(SQSQueueService.GetShortName(queueName))).Returns(sqs.Object);
          
          IQueueService queueService = new SQSQueueService(clientProvider.Object, Options.Create(new QueueOptions()));
-         var res = await queueService.PublishToQueueAsync(queueName, data);
+         var res = await queueService.EnqueueMessageAsync(queueName, data);
          
          Assert.NotNull(res);
      }
@@ -63,7 +63,7 @@ public class SQSQueueServiceTests
 
          IQueueService queueService = new SQSQueueService(clientProvider.Object, Options.Create(new QueueOptions()));
 
-         var res = await queueService.ReceiveMessageAsync("");
+         var res = await queueService.DequeueMessageAsync("");
          Assert.Single(res);
          Assert.Equal(message.Body, res.First().Body);
          Assert.Equal(message.ReceiptHandle, res.First().Handle);

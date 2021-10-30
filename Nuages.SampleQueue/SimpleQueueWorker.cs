@@ -12,7 +12,7 @@ public class SampleQueueWorker : QueueWorker<ISimpleQueueService>
 
     protected override async Task<List<QueueMessage>> ReceiveMessageAsync(ISimpleQueueService queueService)
     {
-        return await queueService.ReceiveMessageAsync("", MaxMessagesCount);
+        return await queueService.DequeueMessageAsync("", MaxMessagesCount);
     }
 
     protected override async Task DeleteMessageAsync(ISimpleQueueService queueService, string id, string receiptHandle)

@@ -2,5 +2,5 @@ namespace Nuages.TaskRunner;
 
 public interface IRunnableTask
 {
-    Task ExecuteAsync(string jsonPayload);
+    Task ExecuteAsync(string payload);
 }

@@ -16,7 +16,7 @@ public class SQSQueueService : ISQSQueueService
         _queryOptions = queryOptions.Value;
     }
 
-    public async Task<string?> PublishToQueueAsync(string queueFullName, string text)
+    public async Task<string?> EnqueueMessageAsync(string queueFullName, string text)
     {
         var request = new SendMessageRequest
         {
@@ -34,7 +34,7 @@ public class SQSQueueService : ISQSQueueService
         return queueFullName.Split('/').Last();
     }
 
-    public async Task<List<QueueMessage>> ReceiveMessageAsync(string queueFullName, int maxMessages = 1)
+    public async Task<List<QueueMessage>> DequeueMessageAsync(string queueFullName, int maxMessages = 1)
     {
         var list = new List<QueueMessage>();
 

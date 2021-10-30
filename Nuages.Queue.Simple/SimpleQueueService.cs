@@ -9,7 +9,7 @@ public class SimpleQueueService : ISimpleQueueService
         return await Task.FromResult(queueName);
     }
 
-    public async Task<string?> PublishToQueueAsync(string queueFullName, string text)
+    public async Task<string?> EnqueueMessageAsync(string queueFullName, string text)
     {
         var message = new QueueMessage
         {
@@ -22,7 +22,7 @@ public class SimpleQueueService : ISimpleQueueService
         return await Task.FromResult(message.MessageId);
     }
 
-    public async Task<List<QueueMessage>> ReceiveMessageAsync(string queueFullName, int maxMessages = 1)
+    public async Task<List<QueueMessage>> DequeueMessageAsync(string queueFullName, int maxMessages = 1)
     {
         var list = new List<QueueMessage>();
         var res = _queue.TryPeek(out var message);

@@ -74,7 +74,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         if (job == null)
             throw new Exception("Can't derserialize Job Definition");
 
-        await _jobRunner.ExecuteAsync(job.AssemblyQualifiedName, job.JsonPayload);
+        await _jobRunner.ExecuteAsync(job.AssemblyQualifiedName, job.Payload);
                 
         return true;
     }
@@ -84,7 +84,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         if (string.IsNullOrEmpty(QueueNameFullName))
             throw new NullReferenceException(QueueNameFullName);
         
-        return await queueService.ReceiveMessageAsync(QueueNameFullName, MaxMessagesCount);
+        return await queueService.DequeueMessageAsync(QueueNameFullName, MaxMessagesCount);
     }
 
     protected override async Task DeleteMessageAsync(T queueService, string id, string receiptHandle)

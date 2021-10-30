@@ -19,7 +19,7 @@ public class ASQQueueService : IASQQueueService
         return await Task.FromResult(queueName);
     }
 
-    public async Task<string?> PublishToQueueAsync(string fullQueueName, string text)
+    public async Task<string?> EnqueueMessageAsync(string fullQueueName, string text)
     {
         var client = _clientProvider.GetClient(fullQueueName);
 
@@ -32,7 +32,7 @@ public class ASQQueueService : IASQQueueService
         return res.Value.MessageId;
     }
 
-    public async Task<List<QueueMessage>> ReceiveMessageAsync(string fullQueueName, int maxMessages = 1)
+    public async Task<List<QueueMessage>> DequeueMessageAsync(string fullQueueName, int maxMessages = 1)
     {
         var client = _clientProvider.GetClient(fullQueueName);
         

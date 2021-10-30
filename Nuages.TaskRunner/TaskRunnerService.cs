@@ -12,7 +12,7 @@ public class TaskRunnerService : ITaskRunnerService
         _serviceProvider = serviceProvider;
     }
         
-    public async Task ExecuteAsync(string assemblyQualifiedName, string jsonPayload)
+    public async Task ExecuteAsync(string assemblyQualifiedName, string payload)
     {
         var type = Type.GetType(assemblyQualifiedName);
         if (type == null)
@@ -23,7 +23,7 @@ public class TaskRunnerService : ITaskRunnerService
             
         var job = (IRunnableTask) ActivatorUtilities.CreateInstance(_serviceProvider, type);
 
-        await job.ExecuteAsync(jsonPayload);
+        await job.ExecuteAsync(payload);
     }
         
 }
