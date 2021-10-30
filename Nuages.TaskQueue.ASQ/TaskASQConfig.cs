@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nuages.Queue.ASQ;
@@ -6,6 +7,7 @@ using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue.ASQ;
 
+[ExcludeFromCodeCoverage]
 // ReSharper disable once InconsistentNaming
 public static class TaskASQConfig
 {
