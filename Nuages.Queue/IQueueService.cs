@@ -1,4 +1,7 @@
-﻿namespace Nuages.Queue;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Nuages.Queue;
 
 public interface IQueueService
 {

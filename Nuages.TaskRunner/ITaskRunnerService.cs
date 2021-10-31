@@ -1,6 +1,10 @@
-namespace Nuages.TaskRunner;
+using System.Threading.Tasks;
 
-public interface ITaskRunnerService
+namespace Nuages.TaskRunner
 {
-    Task ExecuteAsync(string assemblyQualifiedName, string payload);
+    
+    public interface ITaskRunnerService
+    {
+        Task ExecuteAsync(string assemblyQualifiedName, string payload);
+    }
 }

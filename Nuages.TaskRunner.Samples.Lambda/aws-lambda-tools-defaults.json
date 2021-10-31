@@ -8,8 +8,8 @@
   "profile": "",
   "region": "",
   "configuration": "Release",
-  "framework": "netcoreapp6.0",
-  "function-runtime": "dotnetcore6.0",
+  "framework": "netcoreapp3.1",
+  "function-runtime": "dotnetcore3.1",
   "function-memory-size": 256,
   "function-timeout": 30,
   "function-handler": "Nuages.TaskRunner.Samples.Lambda::Nuages.TaskRunner.Samples.Lambda.Function::FunctionHandler"

@@ -1,22 +1,25 @@
 
 
-namespace Nuages.TaskRunner.Tasks;
+
+using System;
+using System.Threading.Tasks;
+
+namespace Nuages.TaskRunner.Tasks
+{
 
 // ReSharper disable once UnusedType.Global
 // ReSharper disable once ClassNeverInstantiated.Global
-public class OutputToConsoleTask : RunnableTask<OutputToConsoleTaskData>
-{
-    public override async Task ExecuteAsync(OutputToConsoleTaskData data)
+    public class OutputToConsoleTask : RunnableTask<OutputToConsoleTaskData>
     {
-        await Task.Run(() =>
+        public override async Task ExecuteAsync(OutputToConsoleTaskData data)
         {
-            Console.WriteLine(data.Message);
-        });
+            await Task.Run(() => { Console.WriteLine(data.Message); });
+        }
     }
-}
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class OutputToConsoleTaskData
-{
-    public string Message { get; set; } = string.Empty;
+    public class OutputToConsoleTaskData
+    {
+        public string Message { get; set; } = string.Empty;
+    }
 }

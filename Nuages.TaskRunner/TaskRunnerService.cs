@@ -1,29 +1,34 @@
+using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Nuages.TaskRunner;
-
-// ReSharper disable once UnusedType.Global
-public class TaskRunnerService : ITaskRunnerService
+namespace Nuages.TaskRunner
 {
-    private readonly IServiceProvider _serviceProvider;
+    
+// ReSharper disable once UnusedType.Global
+    public class TaskRunnerService : ITaskRunnerService
+    {
+        private readonly IServiceProvider _serviceProvider;
 
-    public TaskRunnerService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
-        
-    public async Task ExecuteAsync(string assemblyQualifiedName, string payload)
-    {
-        var type = Type.GetType(assemblyQualifiedName);
-        if (type == null)
+        public TaskRunnerService(IServiceProvider serviceProvider)
         {
-            throw new Exception(
-                $"Can't process task, type not found : {assemblyQualifiedName}");
+            _serviceProvider = serviceProvider;
         }
-            
-        var job = (IRunnableTask) ActivatorUtilities.CreateInstance(_serviceProvider, type);
-
-        await job.ExecuteAsync(payload);
-    }
         
+        public async Task ExecuteAsync(string assemblyQualifiedName, string payload)
+        {
+            var type = Type.GetType(assemblyQualifiedName);
+            if (type == null)
+            {
+                throw new Exception(
+                    $"Can't process task, type not found : {assemblyQualifiedName}");
+            }
+            
+            var job = (IRunnableTask) ActivatorUtilities.CreateInstance(_serviceProvider, type);
+
+            await job.ExecuteAsync(payload);
+        }
+
+
+}
 }

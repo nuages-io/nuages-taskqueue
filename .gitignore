@@ -353,3 +353,4 @@ MigrationBackup/
 .idea
 .DS_Store
 appsettings.local.json
+aws-lambda-tools-nuages.json

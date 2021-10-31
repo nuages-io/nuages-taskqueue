@@ -8,8 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Nuages.TaskRunner.Samples.Lambda;
-
+namespace Nuages.TaskRunner.Samples.Lambda
+{
+    
 // ReSharper disable once UnusedType.Global
 public class Function
 {
@@ -61,6 +62,9 @@ public class Function
 
         var t = JsonSerializer.Deserialize<RunnableTaskDefinition>(message.Body);
 
+        LambdaLogger.Log("MESSAGE: " + message.Body);
+        
         await taskRunner.ExecuteAsync(t.AssemblyQualifiedName, t.Payload);
     }
+}
 }
