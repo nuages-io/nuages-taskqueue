@@ -15,7 +15,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     private string? QueueNameFullName { get; set; }
     
     private readonly TaskQueueWorkerOptions _options;
-    private ITaskRunnerService? _jobRunner;
+    private ITaskRunnerService? _taskRunner;
         
     public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger, 
                             IOptions<TaskQueueWorkerOptions> options) : base(serviceProvider, logger)
@@ -47,7 +47,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     {
         using var scope = ServiceProvider.CreateScope();
             
-        _jobRunner =
+        _taskRunner =
             scope.ServiceProvider
                 .GetRequiredService<ITaskRunnerService>();
             
@@ -67,14 +67,14 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 
     protected override async Task<bool> ProcessMessageAsync(QueueMessage msg)
     {
-        if (_jobRunner == null)
+        if (_taskRunner == null)
             throw new Exception("_jobRunner is null");
             
-        var job = JsonSerializer.Deserialize<RunnableTaskDefinition>(msg.Body);
-        if (job == null)
+        var task = JsonSerializer.Deserialize<RunnableTaskDefinition>(msg.Body);
+        if (task == null)
             throw new Exception("Can't derserialize Job Definition");
 
-        await _jobRunner.ExecuteAsync(job.AssemblyQualifiedName, job.Payload);
+        await _taskRunner.ExecuteAsync(task.AssemblyQualifiedName, task.Payload);
                 
         return true;
     }

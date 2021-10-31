@@ -21,7 +21,6 @@
       <ProjectReference Include="..\Nuages.Queue.SQS\Nuages.Queue.SQS.csproj" />
       <ProjectReference Include="..\Nuages.TaskQueue.SQS\Nuages.TaskQueue.SQS.csproj" />
       <ProjectReference Include="..\Nuages.TaskQueue\Nuages.TaskQueue.csproj" />
-      <ProjectReference Include="..\Nuages.TaskRunner.Samples\Nuages.TaskRunner.Samples.csproj" />
     </ItemGroup>
 
 </Project>
