@@ -4,7 +4,7 @@ using Nuages.TaskRunner;
 
 namespace Nuages.TaskQueue;
 
-public static class QueueServiceExtensions
+public static class TaskQueueServiceExtensions
 {
     // ReSharper disable once UnusedMethodReturnValue.Global
     public static async Task<string?> EnqueueTaskAsync<T, TD>(this IQueueService queueService, string name, TD data)

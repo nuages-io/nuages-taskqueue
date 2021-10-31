@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Nuages.Queue.ASQ;
 using Nuages.TaskQueue;
 using Nuages.TaskQueue.ASQ;
-using Nuages.TaskRunner.Samples;
+using Nuages.TaskRunner.Tasks;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
