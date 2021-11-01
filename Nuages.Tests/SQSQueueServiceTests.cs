@@ -35,7 +35,10 @@ public class SQSQueueServiceTests
 
          var clientProvider = new QueueClientProvider(sqs.Object);
 
-         IQueueService queueService = new SQSQueueService(clientProvider, Options.Create(new QueueOptions()));
+         IQueueService queueService = new SQSQueueService(clientProvider, Options.Create(new QueueOptions
+         {
+             AutoCreateQueue = true
+         }));
          var res = await queueService.EnqueueMessageAsync(queueName,  JsonSerializer.Serialize(data));
          
          Assert.NotNull(res);
