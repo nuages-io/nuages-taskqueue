@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Options;
 
 namespace Nuages.Queue.ASQ;
 
+[ExcludeFromCodeCoverage]
 // ReSharper disable once UnusedType.Global
 public class QueueClientProvider : IQueueClientProvider
 {

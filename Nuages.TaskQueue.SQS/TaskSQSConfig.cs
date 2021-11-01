@@ -9,10 +9,12 @@ namespace Nuages.TaskQueue.SQS;
 
 // ReSharper disable once InconsistentNaming
 [ExcludeFromCodeCoverage]
+// ReSharper disable once UnusedType.Global
 public static class TaskASQSConfig
 {
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once UnusedMethodReturnValue.Global
+    // ReSharper disable once UnusedMember.Global
     public static IServiceCollection AddSQSTaskQueueWorker(this IServiceCollection services, 
         IConfiguration configuration,
         Action<QueueOptions>? configureQueues = null,

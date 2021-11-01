@@ -1,16 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
 using Moq;
+using Nuages.Queue;
+using Nuages.Queue.SQS;
+using Nuages.TaskQueue;
+using Nuages.TaskRunner;
 using Xunit;
 
-namespace Nuages.Queue.SQS.Tests;
+namespace Nuages.Tests;
 
+[ExcludeFromCodeCoverage]
 // ReSharper disable once InconsistentNaming
 public class SQSQueueServiceTests
 {
@@ -18,20 +25,42 @@ public class SQSQueueServiceTests
      public async Task PutMessageToQueue()
      {
          var queueName = Guid.NewGuid().ToString();
-         var data = Guid.NewGuid().ToString();
-         
-         var clientProvider = new Mock<IQueueClientProvider>();
+         var data = new RunnableTaskDefinition();
          
          var sqs = new Mock<IAmazonSQS>();
          sqs.Setup(s => s.SendMessageAsync(It.IsAny<SendMessageRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new SendMessageResponse
          {
              MessageId = Guid.NewGuid().ToString()
          });
+
+         var clientProvider = new QueueClientProvider(sqs.Object);
+
+         IQueueService queueService = new SQSQueueService(clientProvider, Options.Create(new QueueOptions()));
+         var res = await queueService.EnqueueMessageAsync(queueName,  JsonSerializer.Serialize(data));
          
-         clientProvider.Setup(c => c.GetClient(SQSQueueService.GetShortName(queueName))).Returns(sqs.Object);
+         Assert.NotNull(res);
+     }
+     
+     [Fact]
+     public async Task PutMessageToQueueUsingEnqueueTaskAsync()
+     {
+         var queueName = Guid.NewGuid().ToString();
+
+         var sqs = new Mock<IAmazonSQS>();
+         sqs.Setup(s => s.SendMessageAsync(It.IsAny<SendMessageRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new SendMessageResponse
+         {
+             MessageId = Guid.NewGuid().ToString()
+         });
          
-         IQueueService queueService = new SQSQueueService(clientProvider.Object, Options.Create(new QueueOptions()));
-         var res = await queueService.EnqueueMessageAsync(queueName, data);
+         sqs.Setup(s => s.GetQueueUrlAsync(It.IsAny<GetQueueUrlRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetQueueUrlResponse
+         {
+             QueueUrl = queueName
+         });
+         
+         var clientProvider = new QueueClientProvider(sqs.Object);
+
+         IQueueService queueService = new SQSQueueService(clientProvider, Options.Create(new QueueOptions()));
+         var res = await queueService.EnqueueTaskAsync<IQueueService, object>(queueName,  new {Test = "Message"});
          
          Assert.NotNull(res);
      }

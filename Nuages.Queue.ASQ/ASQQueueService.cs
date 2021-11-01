@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Options;
 
 namespace Nuages.Queue.ASQ;
 
+[ExcludeFromCodeCoverage]
 // ReSharper disable once InconsistentNaming
 public class ASQQueueService : IASQQueueService
 {

@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Nuages.TaskQueue;
 
+[ExcludeFromCodeCoverage]
 public class TaskQueueWorkerOptions
 {
     public bool Enabled { get; set; } = true;

@@ -29,7 +29,7 @@ public class SQSQueueService : ISQSQueueService
         return result.MessageId;
     }
 
-    public static string GetShortName(string queueFullName)
+    private static string GetShortName(string queueFullName)
     {
         return queueFullName.Split('/').Last();
     }
