@@ -11,9 +11,6 @@ namespace Nuages.TaskQueue;
 [ExcludeFromCodeCoverage]
 public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 {
-    private string? QueueName { get; set; }
-    private string? QueueNameFullName { get; set; }
-    
     private readonly TaskQueueWorkerOptions _options;
     private ITaskRunnerService? _taskRunner;
         
@@ -22,14 +19,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     {
         _options = options.Value;
     }
-
-    protected override async Task InitializeAsync(T queueService)
-    {
-        QueueNameFullName = await queueService.GetQueueFullNameAsync(QueueName!);
-        if (string.IsNullOrEmpty(QueueNameFullName))
-            throw new Exception($"Queue Url not found for {QueueName}");
-    }
-    
+   
     // ReSharper disable once UnusedMember.Global
     public static  TaskQueueWorker<T> Create(IServiceProvider sp, string queueName)
     {
@@ -58,10 +48,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         QueueName = _options.QueueName;
         MaxMessagesCount = _options.MaxMessagesCount;
         WaitDelayInMillisecondsWhenNoMessages = _options.WaitDelayInMillisecondsWhenNoMessages;
-
-        if (string.IsNullOrEmpty(QueueName))
-            throw new NullReferenceException("QueueName must be provided");
-
+        
         await base.ExecuteAsync(stoppingToken);
     }
 
@@ -77,31 +64,5 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         await _taskRunner.ExecuteAsync(task);
                 
         return true;
-    }
-
-    protected override async Task<List<QueueMessage>> ReceiveMessageAsync(T queueService)
-    {
-        if (string.IsNullOrEmpty(QueueNameFullName))
-            throw new NullReferenceException(QueueNameFullName);
-        
-        return await queueService.DequeueMessageAsync(QueueNameFullName, MaxMessagesCount);
-    }
-
-    protected override async Task DeleteMessageAsync(T queueService, string id, string receiptHandle)
-    {
-        if (string.IsNullOrEmpty(QueueNameFullName))
-            throw new NullReferenceException(QueueNameFullName);
-        
-        await queueService.DeleteMessageAsync(QueueNameFullName, id, receiptHandle);
-    }
-
-    protected override void LogInformation(string message)
-    {
-        Logger.LogInformation("{message} : {QueueNameFullName}",message, QueueNameFullName);
-    }
-    
-    protected override void LogError(string message)
-    {
-        Logger.LogError("{message} : {QueueNameFullName}",message, QueueNameFullName);
     }
 }
