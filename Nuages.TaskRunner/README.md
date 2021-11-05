@@ -28,12 +28,12 @@ public class OutputToConsoleTaskData
 	public OutputToConsoleTaskData()  
 	{  
 	}  
-  	public OutputToConsoleTaskData(string message)  
-	{  
-	  Message = message;  
+    public OutputToConsoleTaskData(string message)  
+    {  
+        Message = message;  
 	}
 	public string Message { get; set; } = string.Empty;  
- }
+}
 ```
 
 Now we need to create a RunnableTaskDefinition to pass as an input to the TaskRunnerService.
