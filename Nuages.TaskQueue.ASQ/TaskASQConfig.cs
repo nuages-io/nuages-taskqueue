@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nuages.Queue;
 using Nuages.Queue.ASQ;
 using Nuages.TaskRunner;
 
@@ -21,9 +22,9 @@ public static class TaskASQConfig
         Action<QueueOptions>? configureQueues = null,
         // ReSharper disable once InconsistentNaming
         Action<ASQQueueClientOptions>? configureASQClient = null,
-        Action<TaskQueueWorkerOptions>? configureWorker = null)
+        Action<QueueWorkerOptions>? configureWorker = null)
     {
-        services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
+        services.Configure<QueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
         services.Configure<ASQQueueClientOptions>(configuration.GetSection("ASQ"));
         services.Configure<QueueOptions>(configuration.GetSection("Queues"));
         
@@ -50,7 +51,7 @@ public static class TaskASQConfig
             }
         });
         
-        services.PostConfigure<TaskQueueWorkerOptions>(options =>
+        services.PostConfigure<QueueWorkerOptions>(options =>
         {
             var configErrors = ValidationErrors(options).ToArray();
             // ReSharper disable once InvertIf

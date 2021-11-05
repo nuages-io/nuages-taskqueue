@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Nuages.TaskQueue;
+namespace Nuages.Queue;
 
 [ExcludeFromCodeCoverage]
-public class TaskQueueWorkerOptions
+public class QueueWorkerOptions
 {
     public bool Enabled { get; set; } = true;
     

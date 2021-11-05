@@ -91,12 +91,12 @@ namespace Nuages.Queue;
 
         protected virtual void LogInformation(string message)
         {
-            Logger.LogInformation("{message} : {QueueNameFullName}",message, QueueNameFullName);
+            Logger.LogInformation("{Message} : {QueueNameFullName}",message, QueueNameFullName);
         }
     
         protected virtual void LogError(string message)
         {
-            Logger.LogError("{message} : {QueueNameFullName}",message, QueueNameFullName);
+            Logger.LogError("{Message} : {QueueNameFullName}",message, QueueNameFullName);
         }
         protected async Task InitializeAsync(T queueService)
         {

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nuages.Queue;
 using Nuages.Queue.SQS;
 using Nuages.TaskRunner;
 
@@ -18,9 +19,9 @@ public static class TaskASQSConfig
     public static IServiceCollection AddSQSTaskQueueWorker(this IServiceCollection services, 
         IConfiguration configuration,
         Action<QueueOptions>? configureQueues = null,
-        Action<TaskQueueWorkerOptions>? configureWorker = null)
+        Action<QueueWorkerOptions>? configureWorker = null)
     {
-        services.Configure<TaskQueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
+        services.Configure<QueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
         services.Configure<QueueOptions>(configuration.GetSection("Queues"));
         
         if (configureWorker != null)
@@ -29,7 +30,7 @@ public static class TaskASQSConfig
         if (configureQueues != null)
             services.Configure(configureQueues);
 
-        services.PostConfigure<TaskQueueWorkerOptions>(options =>
+        services.PostConfigure<QueueWorkerOptions>(options =>
         {
             var configErrors = ValidationErrors(options).ToArray();
             // ReSharper disable once InvertIf

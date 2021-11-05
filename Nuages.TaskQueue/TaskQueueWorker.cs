@@ -11,11 +11,12 @@ namespace Nuages.TaskQueue;
 [ExcludeFromCodeCoverage]
 public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 {
-    private readonly TaskQueueWorkerOptions _options;
+    private readonly QueueWorkerOptions _options;
     private ITaskRunnerService? _taskRunner;
         
-    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger, 
-                            IOptions<TaskQueueWorkerOptions> options) : base(serviceProvider, logger)
+    // ReSharper disable once MemberCanBePrivate.Global
+    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<TaskQueueWorker<T>> logger, 
+                            IOptions<QueueWorkerOptions> options) : base(serviceProvider, logger)
     {
         _options = options.Value;
     }
@@ -25,8 +26,8 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     {
         return new TaskQueueWorker<T>(
             sp,
-            sp.GetRequiredService<ILogger<QueueWorker<T>>>(),
-            Options.Create(new TaskQueueWorkerOptions
+            sp.GetRequiredService<ILogger<TaskQueueWorker<T>>>(),
+            Options.Create(new QueueWorkerOptions
             {
                 QueueName = queueName,
                 Enabled = true
