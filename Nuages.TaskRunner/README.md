@@ -15,13 +15,13 @@ RunnableTask are run in the context of a TaskRunnerService. The TaskRunnerServic
 Let's start with a sample runnable class. This RunnableTask will output the content of a message to the Console.
 
 ```csharp
- public class OutputToConsoleTask : RunnableTask<OutputToConsoleTaskData>  
- {  
-	 public override async Task ExecuteAsync(OutputToConsoleTaskData data)  
-     {  
-	     await Task.Run(() => { Console.WriteLine(data.Message);});  
-     } 
- }  
+public class OutputToConsoleTask : RunnableTask<OutputToConsoleTaskData>  
+{  
+	public override async Task ExecuteAsync(OutputToConsoleTaskData data)  
+	{  
+		await Task.Run(() => { Console.WriteLine(data.Message);});  
+	}
+}  
 
 public class OutputToConsoleTaskData  
 {  
