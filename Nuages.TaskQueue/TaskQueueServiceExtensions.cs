@@ -1,22 +1,26 @@
 using System.Text.Json;
 using Nuages.Queue;
 using Nuages.TaskRunner;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.TaskQueue;
 
+// ReSharper disable once UnusedType.Global
 public static class TaskQueueServiceExtensions
 {
-    // ReSharper disable once UnusedMethodReturnValue.Global
-    public static async Task<string?> EnqueueTaskAsync<T, TD>(this IQueueService queueService, string name, TD data)
+    public static async Task<string?> EnqueueTaskAsync(this IQueueService queueService, string name, RunnableTaskDefinition taskdef)
     {
-        var taskData = new RunnableTaskDefinition
-        {
-            AssemblyQualifiedName = typeof(T).AssemblyQualifiedName!,
-            Payload = JsonSerializer.Serialize(data)
-        };
+        var fullName = await queueService.GetQueueFullNameAsync(name);
+
+        return await queueService.EnqueueMessageAsync(fullName!, JsonSerializer.Serialize(taskdef));
+    }
+    
+    public static async Task<string?> EnqueueTaskAsync<T>(this IQueueService queueService, string name, object taskData) where T : IRunnableTask
+    {
+        var taskDef = RunnableTaskCreator<T>.Create(taskData);
         
         var fullName = await queueService.GetQueueFullNameAsync(name);
 
-        return await queueService.EnqueueMessageAsync(fullName!, JsonSerializer.Serialize(taskData));
+        return await queueService.EnqueueMessageAsync(fullName!, JsonSerializer.Serialize(taskDef));
     }
 }

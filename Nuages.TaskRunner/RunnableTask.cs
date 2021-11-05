@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 namespace Nuages.TaskRunner
 {
     
-    public abstract class RunnableTask<T> : IRunnableTask
+    public abstract class RunnableTask<T> : IRunnableTask 
     {
         // ReSharper disable once MemberCanBeProtected.Global
         public abstract Task ExecuteAsync(T data);
 
-        public virtual async Task ExecuteAsync(string payload)
+        public virtual async Task ExecuteAsync(string? payload)
         {
             if (!string.IsNullOrEmpty(payload))
             {
@@ -17,5 +17,6 @@ namespace Nuages.TaskRunner
                 await ExecuteAsync(data!);
             }
         }
+
     }
 }

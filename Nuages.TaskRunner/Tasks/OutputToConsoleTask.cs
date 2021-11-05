@@ -20,6 +20,17 @@ namespace Nuages.TaskRunner.Tasks
 // ReSharper disable once ClassNeverInstantiated.Global
     public class OutputToConsoleTaskData
     {
+        public OutputToConsoleTaskData()
+        {
+            
+        }
+        
+        // ReSharper disable once UnusedMember.Global
+        public OutputToConsoleTaskData(string message)
+        {
+            Message = message;
+        }
+        
         public string Message { get; set; } = string.Empty;
     }
 }

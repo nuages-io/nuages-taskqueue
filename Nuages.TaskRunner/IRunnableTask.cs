@@ -4,6 +4,6 @@ namespace Nuages.TaskRunner
 {
     public interface IRunnableTask
     {
-        Task ExecuteAsync(string payload);
+        Task ExecuteAsync(string? payload);
     }
 }

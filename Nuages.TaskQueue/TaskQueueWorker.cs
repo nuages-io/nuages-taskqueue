@@ -74,7 +74,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         if (task == null)
             throw new Exception("Can't derserialize Job Definition");
 
-        await _taskRunner.ExecuteAsync(task.AssemblyQualifiedName, task.Payload);
+        await _taskRunner.ExecuteAsync(task);
                 
         return true;
     }
