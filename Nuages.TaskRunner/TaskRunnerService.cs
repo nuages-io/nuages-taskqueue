@@ -9,16 +9,13 @@ namespace Nuages.TaskRunner
     public class TaskRunnerService : ITaskRunnerService
     {
         private readonly IServiceProvider _serviceProvider;
-
-        // ReSharper disable once UnusedMember.Global
-        public object? Result { get; set; }
         
         public TaskRunnerService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
         
-        public async Task ExecuteAsync(RunnableTaskDefinition taskDef)
+        public async Task<IRunnableTask> ExecuteAsync(RunnableTaskDefinition taskDef)
         {
             var type = Type.GetType(taskDef.AssemblyQualifiedName);
             if (type == null)
@@ -30,6 +27,8 @@ namespace Nuages.TaskRunner
             var job = (IRunnableTask) ActivatorUtilities.CreateInstance(_serviceProvider, type);
 
             await job.ExecuteAsync(taskDef.Payload);
+            
+            return job;
         }
     }
 }

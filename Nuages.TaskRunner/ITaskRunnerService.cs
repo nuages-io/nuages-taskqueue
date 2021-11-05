@@ -5,6 +5,6 @@ namespace Nuages.TaskRunner
     
     public interface ITaskRunnerService
     {
-        Task ExecuteAsync(RunnableTaskDefinition taskDef);
+        Task<IRunnableTask> ExecuteAsync(RunnableTaskDefinition taskDef);
     }
 }
