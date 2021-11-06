@@ -11,7 +11,6 @@ namespace Nuages.TaskQueue;
 [ExcludeFromCodeCoverage]
 public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 {
-   
     private ITaskRunnerService? _taskRunner;
         
     // ReSharper disable once MemberCanBePrivate.Global
@@ -32,16 +31,12 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
                 Enabled = true
             }));
     }
-    
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+
+    protected override void InitializeDependency(IServiceScope scope)
     {
-        using var scope = ServiceProvider.CreateScope();
-            
         _taskRunner =
             scope.ServiceProvider
                 .GetRequiredService<ITaskRunnerService>();
-         
-        await base.ExecuteAsync(stoppingToken);
     }
 
     protected override async Task<bool> ProcessMessageAsync(QueueMessage msg)

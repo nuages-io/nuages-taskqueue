@@ -37,7 +37,6 @@ namespace Nuages.Queue;
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-               
             var enable = Options.Enabled;
             if (!enable)
                 return;
@@ -53,7 +52,9 @@ namespace Nuages.Queue;
 
             var queueService = scope.ServiceProvider.GetRequiredService<T>();
 
-            await InitializeAsync(queueService);
+            await InitializeQueueAsync(queueService);
+            
+            InitializeDependency(scope);
             
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -90,6 +91,11 @@ namespace Nuages.Queue;
             }
         }
 
+        protected virtual void InitializeDependency(IServiceScope scope)
+        {
+            
+        }
+
         protected virtual async Task<List<QueueMessage>> ReceiveMessageAsync(T queueService)
         {
             if (string.IsNullOrEmpty(QueueNameFullName))
@@ -115,7 +121,8 @@ namespace Nuages.Queue;
         {
             Logger.LogError("{Message} : {QueueNameFullName}",message, QueueNameFullName);
         }
-        protected async Task InitializeAsync(T queueService)
+        
+        protected virtual async Task InitializeQueueAsync(T queueService)
         {
             QueueNameFullName = await queueService.GetQueueFullNameAsync(QueueName!);
             if (string.IsNullOrEmpty(QueueNameFullName))
