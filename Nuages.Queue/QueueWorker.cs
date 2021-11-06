@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
@@ -21,14 +23,29 @@ namespace Nuages.Queue;
         protected readonly IServiceProvider ServiceProvider;
         protected readonly ILogger<QueueWorker<T>> Logger;
         
-        protected QueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger)
+        protected readonly QueueWorkerOptions Options;
+        
+        protected QueueWorker(IServiceProvider serviceProvider, ILogger<QueueWorker<T>> logger, 
+            IOptions<QueueWorkerOptions> options)
         {
             ServiceProvider = serviceProvider;
             Logger = logger;
+            
+            Options = options.Value;
+           
         }
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+               
+            var enable = Options.Enabled;
+            if (!enable)
+                return;
+             
+            QueueName = Options.QueueName;
+            MaxMessagesCount = Options.MaxMessagesCount;
+            WaitDelayInMillisecondsWhenNoMessages = Options.WaitDelayInMillisecondsWhenNoMessages;
+            
             if (string.IsNullOrEmpty(QueueName))
                 throw new NullReferenceException("QueueName must be provided");
             

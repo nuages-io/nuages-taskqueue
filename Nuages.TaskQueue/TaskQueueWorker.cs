@@ -11,14 +11,13 @@ namespace Nuages.TaskQueue;
 [ExcludeFromCodeCoverage]
 public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
 {
-    private readonly QueueWorkerOptions _options;
+   
     private ITaskRunnerService? _taskRunner;
         
     // ReSharper disable once MemberCanBePrivate.Global
-    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<TaskQueueWorker<T>> logger, 
-                            IOptions<QueueWorkerOptions> options) : base(serviceProvider, logger)
+    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<TaskQueueWorker<T>> logger,  IOptions<QueueWorkerOptions> options) : base(serviceProvider, logger, options)
     {
-        _options = options.Value;
+       
     }
    
     // ReSharper disable once UnusedMember.Global
@@ -27,7 +26,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         return new TaskQueueWorker<T>(
             sp,
             sp.GetRequiredService<ILogger<TaskQueueWorker<T>>>(),
-            Options.Create(new QueueWorkerOptions
+            Microsoft.Extensions.Options.Options.Create(new QueueWorkerOptions
             {
                 QueueName = queueName,
                 Enabled = true
@@ -41,15 +40,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
         _taskRunner =
             scope.ServiceProvider
                 .GetRequiredService<ITaskRunnerService>();
-            
-        var enable = _options.Enabled;
-        if (!enable)
-            return;
-
-        QueueName = _options.QueueName;
-        MaxMessagesCount = _options.MaxMessagesCount;
-        WaitDelayInMillisecondsWhenNoMessages = _options.WaitDelayInMillisecondsWhenNoMessages;
-        
+         
         await base.ExecuteAsync(stoppingToken);
     }
 
