@@ -52,9 +52,11 @@ namespace Nuages.Queue;
 
             var queueService = scope.ServiceProvider.GetRequiredService<T>();
 
-            await InitializeQueueAsync(queueService);
+            QueueNameFullName = await queueService.GetQueueFullNameAsync(QueueName!);
+            if (string.IsNullOrEmpty(QueueNameFullName))
+                throw new Exception($"Queue Url not found for {QueueName}");
             
-            InitializeDependency(scope);
+            InitializeDependencies(scope);
             
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -91,7 +93,7 @@ namespace Nuages.Queue;
             }
         }
 
-        protected virtual void InitializeDependency(IServiceScope scope)
+        protected virtual void InitializeDependencies(IServiceScope scope)
         {
             
         }
@@ -122,13 +124,7 @@ namespace Nuages.Queue;
             Logger.LogError("{Message} : {QueueNameFullName}",message, QueueNameFullName);
         }
         
-        protected virtual async Task InitializeQueueAsync(T queueService)
-        {
-            QueueNameFullName = await queueService.GetQueueFullNameAsync(QueueName!);
-            if (string.IsNullOrEmpty(QueueNameFullName))
-                throw new Exception($"Queue Url not found for {QueueName}");
-        }
-        
+    
         protected abstract Task<bool> ProcessMessageAsync(QueueMessage msg);
 
     }

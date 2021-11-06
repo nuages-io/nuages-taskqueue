@@ -32,7 +32,7 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
             }));
     }
 
-    protected override void InitializeDependency(IServiceScope scope)
+    protected override void InitializeDependencies(IServiceScope scope)
     {
         _taskRunner =
             scope.ServiceProvider

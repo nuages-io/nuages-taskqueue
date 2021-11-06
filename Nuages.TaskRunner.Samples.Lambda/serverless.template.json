@@ -1,0 +1,111 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application.",
+  "Parameters": {
+    "QueueName": {
+      "Type": "String",
+      "Description": "SQS Queue Name"
+    }
+  },
+  "Resources": {
+    "FunctionHandler": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "Nuages.TaskRunner.Samples.Lambda::Nuages.TaskRunner.Samples.Lambda.Function::FunctionHandler",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": {
+          "Fn::GetAtt": [
+            "NuagesTaskRunnerRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "LambdaFunctionEventSourceMapping":
+    {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties":
+      {
+        "BatchSize": 10,
+        "Enabled": true,
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "MyQueue",
+            "Arn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FunctionHandler",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "MyQueue":
+    {
+      "Type" : "AWS::SQS::Queue",
+      "Properties":
+      {
+        "QueueName": { "Ref" : "QueueName" }
+      }
+      
+    },
+    "NuagesTaskRunnerRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "NuagesTaskRunnerRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "lambda.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          }]
+        },
+        "Path": "/",
+        "Policies": [{
+          "PolicyName": "AWSLambdaBasicExecutionRole",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "*"
+            }]
+          }
+        },
+        {
+            "PolicyName": "AWSLambdaSQSQueueExecutionRole",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "sqs:ReceiveMessage",
+                    "sqs:DeleteMessage",
+                    "sqs:GetQueueAttributes",
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+        }]
+      }
+    }
+  }
+}
