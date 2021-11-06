@@ -2,11 +2,10 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Moq;
-using Nuages.TaskRunner;
 using Nuages.TaskRunner.Tasks;
 using Xunit;
 
-namespace Nuages.Tests;
+namespace Nuages.TaskRunner.Tests;
 
 [ExcludeFromCodeCoverage]
 public class TaskRunnerTests

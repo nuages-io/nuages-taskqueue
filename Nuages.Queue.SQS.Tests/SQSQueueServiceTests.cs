@@ -9,12 +9,10 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.Queue;
-using Nuages.Queue.SQS;
 using Nuages.TaskRunner;
 using Xunit;
 
-namespace Nuages.Tests;
+namespace Nuages.Queue.SQS.Tests;
 
 [ExcludeFromCodeCoverage]
 // ReSharper disable once InconsistentNaming

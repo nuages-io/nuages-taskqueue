@@ -8,6 +8,7 @@ namespace Nuages.TaskQueue;
 // ReSharper disable once UnusedType.Global
 public static class TaskQueueServiceExtensions
 {
+    // ReSharper disable once UnusedMethodReturnValue.Global
     public static async Task<string?> EnqueueTaskAsync(this IQueueService queueService, string name, RunnableTaskDefinition taskdef)
     {
         var fullName = await queueService.GetQueueFullNameAsync(name);
