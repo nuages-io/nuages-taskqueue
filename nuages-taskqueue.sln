@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queue", "Queue", "{6DC77E33-1CBF-46AE-82E8-72D8062648CF}"
+	ProjectSection(SolutionItems) = preProject
+		Queue\README.md = Queue\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Queue", "Queue\Nuages.Queue\Nuages.Queue.csproj", "{65A5375D-15FD-4713-9591-9216C67EBE95}"
 EndProject
@@ -11,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Queue.SQS.Tests", "Queue\Nuages.Queue.SQS.Tests\Nuages.Queue.SQS.Tests.csproj", "{4893F7F1-1DC4-4CE4-A241-C4F9DF52CD18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskQueue", "TaskQueue", "{2E0A6A71-C7FB-427B-93E3-5A583A792225}"
+	ProjectSection(SolutionItems) = preProject
+		TaskQueue\README.md = TaskQueue\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskQueue", "TaskQueue\Nuages.TaskQueue\Nuages.TaskQueue.csproj", "{3F183F0B-890E-4A93-A44A-1ABA3D475959}"
 EndProject
@@ -25,6 +31,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskQueue.SQS.Console", "TaskQueue\Nuages.TaskQueue.SQS.Console\Nuages.TaskQueue.SQS.Console.csproj", "{5A178B2E-D398-45DF-AD9A-19D80CCE4EC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskRunner", "TaskRunner", "{869F95EE-F206-4454-B552-0B7D309E1ADD}"
+	ProjectSection(SolutionItems) = preProject
+		TaskRunner\README.md = TaskRunner\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskRunner", "TaskRunner\Nuages.TaskRunner\Nuages.TaskRunner.csproj", "{44D9C139-9B1B-477B-87A5-C1E4AD27AC12}"
 EndProject
