@@ -1,6 +1,5 @@
 namespace Nuages.TaskRunner
 {
-    
 // ReSharper disable once ClassNeverInstantiated.Global
     public class RunnableTaskDefinition
     {

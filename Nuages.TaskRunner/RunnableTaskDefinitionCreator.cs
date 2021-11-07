@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Nuages.TaskRunner
 {
-    public static class RunnableTaskCreator<T> where T :  IRunnableTask
+    public static class RunnableTaskDefinitionCreator<T> where T :  IRunnableTask
     {
         public static RunnableTaskDefinition Create(object? data)
         {

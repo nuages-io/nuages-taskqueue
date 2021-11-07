@@ -14,7 +14,7 @@ public class TaskRunnerTests
     public async Task ShouldExecuteAsync()
     {
         var taskData = new OutputToConsoleTaskData();
-        var taskDef = RunnableTaskCreator<OutputToConsoleTask>.Create(taskData);
+        var taskDef = RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(taskData);
         
         var serviceprovider = new Mock<IServiceProvider>();
 

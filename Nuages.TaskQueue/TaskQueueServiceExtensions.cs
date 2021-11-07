@@ -18,7 +18,7 @@ public static class TaskQueueServiceExtensions
     
     public static async Task<string?> EnqueueTaskAsync<T>(this IQueueService queueService, string name, object taskData) where T : IRunnableTask
     {
-        var taskDef = RunnableTaskCreator<T>.Create(taskData);
+        var taskDef = RunnableTaskDefinitionCreator<T>.Create(taskData);
         
         var fullName = await queueService.GetQueueFullNameAsync(name);
 

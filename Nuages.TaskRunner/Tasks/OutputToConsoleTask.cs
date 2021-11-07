@@ -1,6 +1,4 @@
 
-
-
 using System;
 using System.Threading.Tasks;
 
@@ -13,7 +11,10 @@ namespace Nuages.TaskRunner.Tasks
     {
         public override async Task ExecuteAsync(OutputToConsoleTaskData data)
         {
-            await Task.Run(() => { Console.WriteLine(data.Message); });
+            await Task.Run(() =>
+            {
+                Console.WriteLine(data.Message);
+            });
         }
     }
 
