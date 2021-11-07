@@ -9,7 +9,6 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.TaskRunner;
 using Xunit;
 
 namespace Nuages.Queue.SQS.Tests;
@@ -22,7 +21,6 @@ public class SQSQueueServiceTests
      public async Task PutMessageToQueue()
      {
          var queueName = Guid.NewGuid().ToString();
-         var data = new RunnableTaskDefinition();
          
          var sqs = new Mock<IAmazonSQS>();
          sqs.Setup(s => s.SendMessageAsync(It.IsAny<SendMessageRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new SendMessageResponse
@@ -36,7 +34,7 @@ public class SQSQueueServiceTests
          {
              AutoCreateQueue = true
          }));
-         var res = await queueService.EnqueueMessageAsync(queueName,  JsonSerializer.Serialize(data));
+         var res = await queueService.EnqueueMessageAsync(queueName,  JsonSerializer.Serialize("data"));
          
          Assert.NotNull(res);
      }

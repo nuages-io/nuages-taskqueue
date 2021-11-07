@@ -22,8 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.TaskQueue.ASQ\Nuages.TaskQueue.ASQ.csproj" />
-      <ProjectReference Include="..\Nuages.TaskQueue.SQS\Nuages.TaskQueue.SQS.csproj" />
+        <ProjectReference Include="..\Nuages.Queue.ASQ\Nuages.Queue.ASQ.csproj" />
+        <ProjectReference Include="..\Nuages.Queue.SQS\Nuages.Queue.SQS.csproj" />
     </ItemGroup>
-
 </Project>
