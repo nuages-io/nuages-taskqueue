@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queue", "Queue", "{6DC77E33-1CBF-46AE-82E8-72D8062648CF}"
 	ProjectSection(SolutionItems) = preProject
 		Queue\README.md = Queue\README.md
@@ -42,6 +43,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskRunner.Samples.Lambda", "TaskRunner\Nuages.TaskRunner.Samples.Lambda\Nuages.TaskRunner.Samples.Lambda.csproj", "{9A4B4954-FF50-479E-AD4F-55AA3A842B88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.TaskRunner.Tests", "TaskRunner\Nuages.TaskRunner.Tests\Nuages.TaskRunner.Tests.csproj", "{2537AC0D-16AF-40DC-82FA-98453AFF0AFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA498524-F998-481C-961A-1CC4472FC381}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
