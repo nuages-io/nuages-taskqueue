@@ -5,8 +5,8 @@ Nuages.TaskQueue bring Nuages.TaskRunner and Nuages.Queue together to offer a ho
 
 It is available in two packages :
 
-- Nuages.TaskQueue.SQS for AWS Simple Queue Service ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.SQS) | source)
-- Nuages.TaskQueue.ASQ for Azure Storage Queue ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.ASQ) | source)
+- Nuages.TaskQueue.SQS for AWS Simple Queue Service ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.SQS) | [source](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.SQS))
+- Nuages.TaskQueue.ASQ for Azure Storage Queue ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.ASQ) | [source](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.ASQ))
 
 ## How to use with SQS
 
@@ -93,13 +93,9 @@ await _isqsQueueService.EnqueueTaskAsync("queue-name-goes-here", taskData);
 
 
 
-
-
-
-
 ## Samples
 
-- Nuages.TaskQueue.Samples.SQS.Console
-- Nuages.TaskQueue.Samples.SQS.Web
-- Nuages.TaskQueue.Samples.ASQ.Console
-- Nuages.TaskQueue.Samples.Simple.Console
+- [Nuages.TaskQueue.Samples.SQS.Console](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.Samples.SQS.Console)
+- [Nuages.TaskQueue.Samples.SQS.Web](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.Samples.SQS.Web)
+- [Nuages.TaskQueue.Samples.ASQ.Console](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.Samples.ASQ.Console)
+- [Nuages.TaskQueue.Samples.Simple.Console](https://github.com/nuages-io/nuages-taskqueue/tree/main/TaskQueue/Nuages.TaskQueue.Samples.Simple.Console)
