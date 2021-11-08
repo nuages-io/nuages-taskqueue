@@ -2,6 +2,7 @@ using Amazon.SQS;
 using Nuages.Queue;
 using Nuages.Queue.SQS;
 using Nuages.TaskQueue.SQS;
+// ReSharper disable UnusedParameter.Local
 
 var builder = WebApplication.CreateBuilder(args);
 

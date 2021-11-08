@@ -1,17 +1,18 @@
-﻿using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Nuages.TaskRunner.Samples.Console
 {
-    class Program
+    // ReSharper disable once ClassNeverInstantiated.Global
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             MainAsync(args).Wait();
         }
         
-        static async Task MainAsync(string[] args)
+        // ReSharper disable once UnusedParameter.Local
+        private static async Task MainAsync(string[] args)
         {
             //Initialize teh DI container
             var serviceCollection = new ServiceCollection();
@@ -56,6 +57,7 @@ namespace Nuages.TaskRunner.Samples.Console
 
     public class OutputToConsoleTaskData  
     {  
+        // ReSharper disable once UnusedMember.Global
         public OutputToConsoleTaskData()  
         {  
         }  

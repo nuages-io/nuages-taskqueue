@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Nuages.Queue;
 using Nuages.Queue.SQS;
 using Nuages.TaskRunner;
 using Nuages.TaskRunner.Tasks;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.TaskQueue.Samples.SQS.Web.Pages;
 
