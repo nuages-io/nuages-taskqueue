@@ -73,7 +73,7 @@ This is what it should look like.
 
 {
   "AssemblyQualifiedName": "Nuages.TaskRunner.Tasks.OutputToConsoleTask, Nuages.TaskRunner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "Payload": {"Message":"Started !!!!"}
+  "Payload": { "Message" : "Started !!!!" }
 }
 
 ````
