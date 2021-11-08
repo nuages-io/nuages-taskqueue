@@ -1,8 +1,8 @@
 # Nuages.TaskRunner
 
-### What is Nuages.TaskRunner?
+## What is Nuages.TaskRunner?
 
-Nuages.TaskRunner is a .NET Core library that provides functionalities to execute code based on a task definition.
+Nuages.TaskRunner is a .NET Core C# library that provides functionalities to execute code based on a task definition.
 
 We call this a RunnableTask.
 
