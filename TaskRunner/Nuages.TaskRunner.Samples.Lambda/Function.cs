@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
@@ -58,7 +59,7 @@ public class Function
     // ReSharper disable once UnusedParameter.Local
     private async Task ProcessMessageAsync(SQSEvent.SQSMessage message, ILambdaContext context)
     {
-        var taskRunner = new TaskRunnerService(_serviceProvider);
+        var taskRunner = new TaskRunnerService(_serviceProvider, new List<ITaskAuthorizationService>());
 
         var t = JsonSerializer.Deserialize<RunnableTaskDefinition>(message.Body);
 

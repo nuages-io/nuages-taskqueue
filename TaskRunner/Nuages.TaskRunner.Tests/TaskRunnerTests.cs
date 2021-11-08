@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Moq;
@@ -18,7 +19,7 @@ public class TaskRunnerTests
         
         var serviceprovider = new Mock<IServiceProvider>();
 
-        var runner = new TaskRunnerService(serviceprovider.Object);
+        var runner = new TaskRunnerService(serviceprovider.Object, new List<ITaskAuthorizationService>());
 
         await runner.ExecuteAsync(taskDef);
 

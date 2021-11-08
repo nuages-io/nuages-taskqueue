@@ -16,9 +16,9 @@ public static class TaskQueueServiceExtensions
         return await queueService.EnqueueMessageAsync(fullName!, JsonSerializer.Serialize(taskdef));
     }
     
-    public static async Task<string?> EnqueueTaskAsync<T>(this IQueueService queueService, string name, object taskData) where T : IRunnableTask
+    public static async Task<string?> EnqueueTaskAsync<T>(this IQueueService queueService, string name, object taskData, string? userId = null) where T : IRunnableTask
     {
-        var taskDef = RunnableTaskDefinitionCreator<T>.Create(taskData);
+        var taskDef = RunnableTaskDefinitionCreator<T>.Create(taskData, userId);
         
         var fullName = await queueService.GetQueueFullNameAsync(name);
 

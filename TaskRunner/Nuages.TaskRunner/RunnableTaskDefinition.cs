@@ -5,5 +5,6 @@ namespace Nuages.TaskRunner
     {
         public string AssemblyQualifiedName { get; set; } = string.Empty;
         public string? Payload { get; set; }= string.Empty;
+        public string? UserId { get; set; }
     }
 }
