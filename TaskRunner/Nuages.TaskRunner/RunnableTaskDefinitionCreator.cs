@@ -9,7 +9,7 @@ namespace Nuages.TaskRunner
             var taskData = new RunnableTaskDefinition
             {
                 AssemblyQualifiedName = typeof(T).AssemblyQualifiedName!,
-                Payload = data == null ? null : JsonSerializer.Serialize(data),
+                Payload = data ,
                 UserId = userId
             };
 

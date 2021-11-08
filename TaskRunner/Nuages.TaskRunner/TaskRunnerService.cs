@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -67,7 +68,7 @@ namespace Nuages.TaskRunner
             
             var job = (IRunnableTask) ActivatorUtilities.CreateInstance(_serviceProvider, type);
 
-            await job.ExecuteAsync(taskDef.Payload);
+            await job.ExecuteAsync(JsonSerializer.Serialize(taskDef.Payload));
             
             return job;
         }

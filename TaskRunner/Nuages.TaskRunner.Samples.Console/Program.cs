@@ -38,7 +38,7 @@ namespace Nuages.TaskRunner.Samples.Console
             var taskDef2 = new RunnableTaskDefinition
             {
                 AssemblyQualifiedName = typeof(OutputToConsoleTask).AssemblyQualifiedName!,
-                Payload = JsonSerializer.Serialize(new { Message = "Method 3 : Your name is : " + message })
+                Payload = new { Message = "Method 3 : Your name is : " + message }
             };
             await taskRunner.ExecuteAsync(taskDef2);
             
