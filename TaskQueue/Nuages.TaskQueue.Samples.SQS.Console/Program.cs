@@ -27,8 +27,8 @@ var hostBuilder = new HostBuilder()
             //.AddSingleton<IHostedService>(sp =>
             //   TaskQueueWorker<ISQSQueueService>.Create(sp, "TaskQueueTest-2")); 
 
-            //Connection string is provided by IQueueClientProvider.
-            //Provide another service implementation for IQueueClientProvider if you want to control the connection string by queue.
+            //IAmazonS3 depency is provided by IQueueClientProvider.
+            //Provide another service implementation for IQueueClientProvider if you want to provide the IAmazonS3 service instance
             
             AddSQS(services);
         }
