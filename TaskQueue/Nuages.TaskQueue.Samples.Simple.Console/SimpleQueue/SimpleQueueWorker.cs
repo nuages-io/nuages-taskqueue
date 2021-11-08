@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
 using Nuages.Queue;
-using Nuages.TaskQueue.Simple.Console.SimpleQueue.Queue;
+using Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue.Queue;
 
-namespace Nuages.TaskQueue.Simple.Console.SimpleQueue;
+namespace Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue;
 
 public class SimpleQueueWorker : QueueWorker<ISimpleQueueService>
 {

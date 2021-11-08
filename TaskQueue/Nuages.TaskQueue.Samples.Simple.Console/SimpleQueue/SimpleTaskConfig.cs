@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Nuages.Queue;
-using Nuages.TaskQueue.Simple.Console.SimpleQueue.Queue;
+using Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue.Queue;
 using Nuages.TaskRunner;
 
-namespace Nuages.TaskQueue.Simple.Console.SimpleQueue;
+namespace Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue;
 
 // ReSharper disable once InconsistentNaming
 public static class SimpleTaskConfig

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Nuages.Queue;
 using Nuages.TaskQueue;
-using Nuages.TaskQueue.Simple.Console.SimpleQueue;
-using Nuages.TaskQueue.Simple.Console.SimpleQueue.Queue;
+using Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue;
+using Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue.Queue;
 using Nuages.TaskRunner;
 using Nuages.TaskRunner.Tasks;
 

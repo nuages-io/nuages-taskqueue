@@ -6,7 +6,7 @@ using Nuages.Queue.SQS;
 using Nuages.TaskRunner;
 using Nuages.TaskRunner.Tasks;
 
-namespace Nuages.TaskQueue.SQS.Web.Pages;
+namespace Nuages.TaskQueue.Samples.SQS.Web.Pages;
 
 public class IndexModel : PageModel
 {

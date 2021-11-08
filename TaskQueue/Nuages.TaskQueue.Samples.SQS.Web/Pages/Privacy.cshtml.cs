@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Nuages.TaskQueue.SQS.Web.Pages;
+namespace Nuages.TaskQueue.Samples.SQS.Web.Pages;
 
 public class PrivacyModel : PageModel
 {
