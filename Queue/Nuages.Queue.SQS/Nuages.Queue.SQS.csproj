@@ -9,7 +9,7 @@
 
 
     <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     
     <ItemGroup>
@@ -17,8 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.SQS" Version="3.7.1.29" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0-rc.2.21480.5" />
+      <PackageReference Include="AWSSDK.SQS" Version="3.7.1.36" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     </ItemGroup>
 
 </Project>
