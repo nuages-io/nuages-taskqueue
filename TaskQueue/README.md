@@ -8,7 +8,7 @@ It is available in two packages :
 - Nuages.TaskQueue.SQS for AWS Simple Queue Service ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.SQS) | source)
 - Nuages.TaskQueue.ASQ for Azure Storage Queue ([nuget](https://www.nuget.org/packages/Nuages.TaskQueue.ASQ) | source)
 
-## How to use
+## How to use with SQS
 
 ### Configuration
 
@@ -79,7 +79,7 @@ This is what it should look like.
 ````
 
 
-A service is provided to help you push such a message from your code. You need to use either ISQSQueueService or IASQQueueService.
+A service is provided to help you push such a message from your code. You need to use ISQSQueueService for that.
 
 ```csharp
 
