@@ -14,5 +14,6 @@
   "function-timeout": 30,
   "s3-bucket" : "",
   "stack-name": "",
-  "template": "serverless.template.json"
+  "template": "serverless.template.json",
+  "template-parameters": "QueueName=???"
 }

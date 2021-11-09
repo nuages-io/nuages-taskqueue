@@ -1,1 +1,0 @@
-dotnet lambda deploy-serverless -cfg aws-lambda-tools-nuages.json
