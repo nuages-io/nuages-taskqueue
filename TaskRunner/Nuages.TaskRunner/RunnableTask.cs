@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Nuages.TaskRunner
 {
-    
     public abstract class RunnableTask<T> : IRunnableTask 
     {
         // ReSharper disable once MemberCanBeProtected.Global
@@ -17,6 +16,5 @@ namespace Nuages.TaskRunner
                 await ExecuteAsync(data!);
             }
         }
-
     }
 }

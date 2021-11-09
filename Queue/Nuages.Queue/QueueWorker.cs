@@ -123,8 +123,6 @@ namespace Nuages.Queue;
         {
             Logger.LogError("{Message} : {QueueNameFullName}",message, QueueNameFullName);
         }
-        
     
         protected abstract Task<bool> ProcessMessageAsync(QueueMessage msg);
-
     }
