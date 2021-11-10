@@ -13,12 +13,12 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.Queue\Nuages.Queue.csproj" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+        <PackageReference Include="Nuages.Queue.SQS" Version="1.1.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <ProjectReference Include="..\Nuages.TaskQueue\Nuages.TaskQueue.csproj" />
     </ItemGroup>
-
 </Project>

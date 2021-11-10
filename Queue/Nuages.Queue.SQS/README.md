@@ -1,1 +1,0 @@
-# Nuages.Queue.SQS

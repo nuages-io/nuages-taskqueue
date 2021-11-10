@@ -11,6 +11,8 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+        <PackageReference Include="Nuages.Queue" Version="1.1.0" />
+        <PackageReference Include="Nuages.TaskRunner" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -18,8 +20,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\Queue\Nuages.Queue\Nuages.Queue.csproj" />
-      <ProjectReference Include="..\..\TaskRunner\Nuages.TaskRunner\Nuages.TaskRunner.csproj" />
+
     </ItemGroup>
 
 </Project>
