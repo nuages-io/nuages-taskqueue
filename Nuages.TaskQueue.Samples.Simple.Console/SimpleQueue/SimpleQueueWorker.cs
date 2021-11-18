@@ -4,7 +4,7 @@ using Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue.Queue;
 
 namespace Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue;
 
-public class SimpleQueueWorker : QueueWorker<ISimpleQueueService>
+public class SimpleQueueWorker : TaskQueueWorker<ISimpleQueueService>
 {
     public SimpleQueueWorker(IServiceProvider serviceProvider, ILogger<SimpleQueueWorker> logger, IOptions<QueueWorkerOptions> queueWorkerOptions) : 
         base(serviceProvider, logger, queueWorkerOptions)
@@ -22,10 +22,4 @@ public class SimpleQueueWorker : QueueWorker<ISimpleQueueService>
         await queueService.DeleteMessageAsync(QueueName!, id, receiptHandle);
     }
 
-    protected override async Task<bool> ProcessMessageAsync(QueueMessage msg)
-    {
-        Logger.LogInformation("Message : {Message}", msg.Body);
-        
-        return await Task.FromResult(true);
-    }
 }

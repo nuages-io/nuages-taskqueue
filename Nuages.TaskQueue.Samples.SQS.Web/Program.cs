@@ -6,7 +6,6 @@ using Nuages.TaskQueue.SQS;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 
 ConfigureTaskQueue(builder);
