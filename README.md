@@ -1,4 +1,11 @@
-# Nuages.TaskQueue <img alt="Nuget" src="https://img.shields.io/nuget/v/Nuages.TaskQueue?style=flat-square"> ![example workflow](https://github.com/nuages-io/nuages-taskqueue/actions/workflows/nuget.yml/badge.svg)
+# Nuages.TaskQueue 
+
+[![Nuages.TaskQueue](https://img.shields.io/nuget/v/Nuages.TaskQueue?style=flat-square&label=Nuages.TaskQueue)](https://www.nuget.org/packages/Nuages.TaskQueue/)
+[![Nuages.TaskQueue](https://img.shields.io/nuget/v/Nuages.TaskQueue.SQS?style=flat-square&label=Nuages.TaskQueue.SQS)](https://www.nuget.org/packages/Nuages.TaskQueue.SQS/)
+[![Nuages.TaskQueue](https://img.shields.io/nuget/v/Nuages.TaskQueue.ASQ?style=flat-square&label=Nuages.TaskQueue.ASQ)](https://www.nuget.org/packages/Nuages.TaskQueue.ASQ/)
+
+[![example workflow](https://github.com/nuages-io/nuages-taskqueue/actions/workflows/nuget.yml/badge.svg)](https://github.com/nuages-io/nuages-taskqueue/actions/workflows/nuget.yml)
+
 
 Nuages.TaskQueue bring Nuages.TaskRunner and Nuages.Queue together to offer a hosted task running service based on message from a queue.
 
