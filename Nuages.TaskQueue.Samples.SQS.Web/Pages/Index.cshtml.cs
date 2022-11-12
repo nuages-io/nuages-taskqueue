@@ -33,7 +33,7 @@ public class IndexModel : PageModel
         var message = Request.Form["message"];
         
         var taskData =
-            RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(new OutputToConsoleTaskData { Message = message });
+            RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(new OutputToConsoleTaskData { Message = message! });
     
         await _isqsQueueService.EnqueueTaskAsync(_options.QueueName, taskData);
 

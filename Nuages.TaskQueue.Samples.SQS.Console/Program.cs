@@ -10,7 +10,7 @@ using Nuages.TaskRunner;
 using Nuages.TaskRunner.Tasks;
 
 var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
+    .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName!)
     .AddJsonFile("appsettings.json", true)
     .AddJsonFile("appsettings.local.json", true)
     .Build();
