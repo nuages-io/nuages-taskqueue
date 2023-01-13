@@ -13,6 +13,8 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.local.json", true)
     .Build();
 
+const string name = "TaskWorker";
+
 var hostBuilder = new HostBuilder()
     .ConfigureLogging(logging =>
     {
@@ -22,14 +24,12 @@ var hostBuilder = new HostBuilder()
         {
             services
                 .AddSingleton(configuration)
-                .AddASQTaskQueueWorker(configuration); //This will create the first worker based on the appSettings.json config
-
-            //Use this to add additional workers. It may be for the same queue or for another queue
-            //.AddSingleton<IHostedService>(sp =>
-            //   TaskQueueWorker<IASQQueueService>.Create(sp, "test-queue-2")); 
-
-            //Connection string is provided by IQueueClientProvider.
-            //Provide another service implementation for IQueueClientProvider if you want to control the connection string by queue.
+                .AddASQTaskQueue() //This will create the first worker based on the appSettings.json config
+                .Configure<ASQQueueClientOptions>(configuration.GetSection("ASQ"))
+                .Configure<QueueWorkerOptions>(name, configuration.GetSection("TaskQueueWorker"))
+                .AddSingleton<IHostedService>(x =>
+                    ActivatorUtilities.CreateInstance<TaskQueueWorker<IASQQueueService>>(x, name));
+            
         }
     );
 
@@ -43,7 +43,7 @@ await host.RunAsync();
 async Task SendTestMessageAsync(IServiceProvider provider)
 {
     var queueService = provider.GetRequiredService<IASQQueueService>();
-    var options = provider.GetRequiredService<IOptions<QueueWorkerOptions>>().Value;
+    var options = provider.GetRequiredService<IOptionsMonitor<QueueWorkerOptions>>().Get(name);
 
     var taskData =
         RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(new OutputToConsoleTaskData { Message = "Started !!!!" });

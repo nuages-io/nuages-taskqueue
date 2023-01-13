@@ -15,35 +15,16 @@ public static class SimpleTaskConfig
         // ReSharper disable once InconsistentNaming
         Action<QueueWorkerOptions>? configureWorker = null)
     {
-        services.Configure<QueueWorkerOptions>(configuration.GetSection("TaskQueueWorker"));
+        var name = "TaskWorker";
+        
+        services.Configure<QueueWorkerOptions>(name, configuration.GetSection("TaskQueueWorker"));
         
         if (configureWorker != null)
-            services.Configure(configureWorker);
-        
-        services.PostConfigure<QueueWorkerOptions>(options =>
-        {
-            var configErrors = ValidationErrors(options).ToArray();
-            // ReSharper disable once InvertIf
-            if (configErrors.Any())
-            {
-                var aggregateErrors = string.Join(",", configErrors);
-                var count = configErrors.Length;
-                var configType = options.GetType().Name;
-                throw new ApplicationException(
-                    $"Found {count} configuration error(s) in {configType}: {aggregateErrors}");
-            }
-        });
+            services.Configure(name, configureWorker);
 
         return services.AddSingleton<ISimpleQueueService, SimpleQueueService>()
             .AddScoped<ITaskRunnerService, TaskRunnerService>()
-            .AddHostedService<SimpleQueueWorker>();
+            .AddSingleton<IHostedService>(x =>ActivatorUtilities.CreateInstance<SimpleQueueWorker>(x, name));
     }
 
-    private static IEnumerable<string> ValidationErrors(object option)
-    {
-        var context = new ValidationContext(option, null);
-        var results = new List<ValidationResult>();
-        Validator.TryValidateObject(option, context, results, true);
-        foreach (var validationResult in results) yield return validationResult.ErrorMessage ?? "?";
-    }
 }

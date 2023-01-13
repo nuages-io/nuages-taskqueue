@@ -14,22 +14,10 @@ public class TaskQueueWorker<T> : QueueWorker<T> where T : IQueueService
     private ITaskRunnerService? _taskRunner;
         
     // ReSharper disable once MemberCanBePrivate.Global
-    public TaskQueueWorker(IServiceProvider serviceProvider, ILogger<TaskQueueWorker<T>> logger,  IOptions<QueueWorkerOptions> options) : base(serviceProvider, logger, options)
+    public TaskQueueWorker(string name, IServiceProvider serviceProvider, ILogger<TaskQueueWorker<T>> logger,  
+        IOptionsMonitor<QueueWorkerOptions> options) : base(name, serviceProvider, logger, options)
     {
-       
-    }
-   
-    // ReSharper disable once UnusedMember.Global
-    public static  TaskQueueWorker<T> Create(IServiceProvider sp, string queueName)
-    {
-        return new TaskQueueWorker<T>(
-            sp,
-            sp.GetRequiredService<ILogger<TaskQueueWorker<T>>>(),
-            Microsoft.Extensions.Options.Options.Create(new QueueWorkerOptions
-            {
-                QueueName = queueName,
-                Enabled = true
-            }));
+        var o = options.Get(name);
     }
 
     protected override void InitializeDependencies(IServiceScope scope)

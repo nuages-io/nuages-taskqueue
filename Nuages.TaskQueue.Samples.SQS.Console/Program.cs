@@ -15,20 +15,19 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.local.json", true)
     .Build();
 
+const string name = "Worker";
+
 var hostBuilder = new HostBuilder()
     .ConfigureLogging(logging => { logging.AddConsole(); })
     .ConfigureServices(services =>
         {
             services
                 .AddSingleton(configuration)
-                .AddSQSTaskQueueWorker(configuration);
-
-            //Use this to add additional workers. It may be for the same queue or for another queue
-            //.AddSingleton<IHostedService>(sp =>
-            //   TaskQueueWorker<ISQSQueueService>.Create(sp, "TaskQueueTest-2")); 
-
-            //IAmazonS3 depency is provided by IQueueClientProvider.
-            //Provide another service implementation for IQueueClientProvider if you want to provide the IAmazonS3 service instance
+                .AddSQSTaskQueue()
+                .Configure<QueueWorkerOptions>(name,
+                    configuration.GetSection("TaskQueueWorker"))
+                .AddSingleton<IHostedService>(x =>
+                    ActivatorUtilities.CreateInstance<TaskQueueWorker<ISQSQueueService>>(x, name));
             
             AddSQS(services);
         }
@@ -43,7 +42,7 @@ await host.RunAsync();
 async Task SendTestMessageAsync(IServiceProvider provider)
 {
     var queueService = provider.GetRequiredService<ISQSQueueService>();
-    var options = provider.GetRequiredService<IOptions<QueueWorkerOptions>>().Value;
+    var options = provider.GetRequiredService<IOptionsMonitor<QueueWorkerOptions>>().Get(name);
     
     var taskData =
         RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(new OutputToConsoleTaskData { Message = "Started !!!!" });

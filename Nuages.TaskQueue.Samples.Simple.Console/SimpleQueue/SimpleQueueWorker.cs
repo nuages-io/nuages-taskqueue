@@ -6,8 +6,8 @@ namespace Nuages.TaskQueue.Samples.Simple.Console.SimpleQueue;
 
 public class SimpleQueueWorker : TaskQueueWorker<ISimpleQueueService>
 {
-    public SimpleQueueWorker(IServiceProvider serviceProvider, ILogger<SimpleQueueWorker> logger, IOptions<QueueWorkerOptions> queueWorkerOptions) : 
-        base(serviceProvider, logger, queueWorkerOptions)
+    public SimpleQueueWorker(string name, IServiceProvider serviceProvider, ILogger<SimpleQueueWorker> logger, IOptionsMonitor<QueueWorkerOptions> queueWorkerOptions) : 
+        base(name, serviceProvider, logger, queueWorkerOptions)
     {
        
     }

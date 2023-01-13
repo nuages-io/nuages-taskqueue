@@ -38,7 +38,7 @@ await host.RunAsync();
 async Task SendTestMessageAsync(IServiceProvider provider)
 {
     var queueService = provider.GetRequiredService<ISimpleQueueService>();
-    var options = provider.GetRequiredService<IOptions<QueueWorkerOptions>>().Value;
+    var options = provider.GetRequiredService<IOptionsMonitor<QueueWorkerOptions>>().Get("TaskWorker");
     var taskData =
         RunnableTaskDefinitionCreator<OutputToConsoleTask>.Create(new OutputToConsoleTaskData { Message = "Started !!!!" });
     await queueService.EnqueueTaskAsync(options.QueueName, taskData);

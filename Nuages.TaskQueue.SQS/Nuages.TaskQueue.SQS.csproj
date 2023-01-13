@@ -33,7 +33,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
-        <PackageReference Include="Nuages.Queue.SQS" Version="1.4.5" />
+        <PackageReference Include="Nuages.Queue.SQS" Version="1.5.1" />
     </ItemGroup>
 
     <ItemGroup>

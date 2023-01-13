@@ -13,10 +13,10 @@ public class IndexModel : PageModel
     private readonly ISQSQueueService _isqsQueueService;
     private readonly QueueWorkerOptions _options;
 
-    public IndexModel( ISQSQueueService isqsQueueService, IOptions<QueueWorkerOptions> options)
+    public IndexModel( ISQSQueueService isqsQueueService, IOptionsMonitor<QueueWorkerOptions> options)
     {
         _isqsQueueService = isqsQueueService;
-        _options = options.Value;
+        _options = options.Get(Values.Name);
     }
 
     public async Task OnGet()
